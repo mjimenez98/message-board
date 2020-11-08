@@ -14,6 +14,13 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
+<%
+    //allow access only if session exists
+    String user = null;
+    if (session.getAttribute("user") != null) {
+        response.sendRedirect("Posts.jsp");
+    }
+%>
 <div class="row">
     <div class="col-md-12">
         <form action="LoginPageServlet" method="post">

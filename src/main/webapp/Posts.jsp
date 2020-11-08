@@ -23,6 +23,7 @@
                 <label for="message">Message</label>
                 <input type="text" id="message" name="message">
             </fieldset>
+            <button type="submit">Post</button>
         </form>
         <form action="<%=response.encodeURL("LogoutServlet")%>" method="post">
             <input type="submit" value="Logout">
