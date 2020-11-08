@@ -1,9 +1,26 @@
+<%@ page import="models.Post" %>
+<%@ page import="java.util.LinkedList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
         <title>Message Board</title>
     </head>
     <body>
+        <div class="row">
+            <h1>Posts</h1>
+            <%
+                LinkedList<Post> posts = (LinkedList<Post>) request.getAttribute("posts");
+
+                if (request.getAttribute("posts") != null) {
+                    for(Post post : posts) {
+            %>
+                <p><%= post.getTitle() + " - " + post.getUsername() + "\n" + post.getMessage()%></p>
+            <%
+                    }
+                }
+            %>
+        </div>
+        <hr/>
         <div class="row">
             <div class="col-md-12">
                 <form action="posts" method="post">
