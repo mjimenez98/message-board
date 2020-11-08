@@ -6,6 +6,13 @@
         <title>Message Board</title>
     </head>
     <body>
+      <%
+    //allow access only if session exists
+    String user = null;
+    if (session.getAttribute("user") == null) {
+        response.sendRedirect("Login.jsp");
+    } else user = (String) session.getAttribute("user");
+%>
         <div class="row">
             <h1>Posts</h1>
             <%
@@ -37,6 +44,9 @@
                     </fieldset>
                     <button type="submit">Sign Up</button>
                 </form>
+               <form action="<%=response.encodeURL("LogoutServlet")%>" method="post">
+            <input type="submit" value="Logout">
+        </form>
             </div>
         </div>
     </body>
