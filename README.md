@@ -30,9 +30,38 @@ Tomcat is needed to run the Java servlets and launch the web app locally. This p
 Add Tomcat Server and set the following options:
 - Application Server: Find the path of the Tomcat server you previously downloaded. If do not have Tomcat installed,
 read the section above so you are able to finish your setup
-- URL: `http://localhost:8080/message-board/`
+- URL: `http://localhost:8080/message_board_war/posts`
 
 Before you hit apply, above this button there will be a message in red saying `No artifacts marked for deployment`.
 Click on `Fix` and select `message-board:war`
 
 4. Run the new Tomcat configuration and navigate away!
+
+### Database
+
+This project uses MySQL as its database management system.
+
+To have a local instance of the database, do the following steps:
+
+1. Install the pre-requisites:
+- [MySQL](https://dev.mysql.com/doc/mysql-installation-excerpt/5.7/en/)
+- [MySQL Server](https://dev.mysql.com/doc/mysql-installation-excerpt/5.7/en/)
+
+2. Open your terminal and log into your MySQL command-line client: `mysql -u root -p`
+
+3. Run schema found in `db/schema.sql`
+
+4. Replace `DB_PASSWORD` in `src/main/java/db/DBConnection.java` with the password you set for your MySQL Server
+in the installation process
+
+For more help or information, check out [this resource](https://ladvien.com/data-analytics-mysql-localhost-setup/) 
+with SQL demos.
+
+## Team Information
+
+| Member              | @GitHub                                              |
+|:--------------------|:-----------------------------------------------------|
+| Dina Sadirmekova    | [@dinasadir](https://github.com/dinasadir)           |
+| Miguel Jimenez      | [@mjimenez98](https://github.com/mjimenez98)         |
+| Nicolas Zito        | [@z1to](https://github.com/z1to)                     |
+| Saima Syed          | [@CoBatool](https://github.com/CoBatool)             |
