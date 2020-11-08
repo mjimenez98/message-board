@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding="UTF-8" ?>
+
+<users>
+    <user>
+        <user_id>saima</user_id>
+        <full_name>Saima</full_name>
+        <email>saima@mb.com</email>
+        <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</password>
+    </user>
+    <user>
+        <user_id>miguel</user_id>
+        <full_name>Miguel</full_name>
+        <email>miguel@mb.com</email>
+        <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</password>
+    </user>
+    <user>
+        <user_id>nicolas</user_id>
+        <full_name>Nicolas</full_name>
+        <email>nicolas@mb.com</email>
+        <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</password>
+    </user>
+    <user>
+        <user_id>dina</user_id>
+        <full_name>Dina</full_name>
+        <email>dina@mb.com</email>
+        <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</password>
+    </user>
+</users>
