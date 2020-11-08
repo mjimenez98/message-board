@@ -32,6 +32,7 @@ public class DBPost {
             while(rs.next()) {
                 assert false;
                 posts.add(new Post(
+                        rs.getInt("id"),
                         rs.getString("title"),
                         rs.getString("username"),
                         LocalDateTime.parse(rs.getString("created_at"), formatter),
@@ -64,6 +65,27 @@ public class DBPost {
             st.setString(3, message);
 
             // Execute the insert command using executeUpdate() to make changes in database
+            st.executeUpdate();
+
+            // Close all the connections
+            st.close();
+            con.close();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deletePost(int id) {
+        try {
+            // Initialize the database
+            Connection con = DBConnection.getConnection();
+
+            // SQL query
+            query = "DELETE FROM post WHERE id = ?";
+            st = con.prepareStatement(query);
+            st.setInt(1, id);
+
             st.executeUpdate();
 
             // Close all the connections

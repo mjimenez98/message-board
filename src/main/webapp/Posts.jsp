@@ -14,7 +14,13 @@
                 if (request.getAttribute("posts") != null) {
                     for(Post post : posts) {
             %>
-                <p><%= post.getTitle() + " - " + post.getUsername() + "\n" + post.getMessage()%></p>
+                <p><%= post.getTitle() + " - " + post.getUsername() %></p>
+                <p><%= post.getMessage()%></p>
+                <form action="posts" method="post">
+                    <input type="hidden" name="id" value="<%= post.getId() %>">
+                    <input type="submit" name="request" class="btn button-color" value="delete">
+                </form>
+                <hr/>
             <%
                     }
                 }
@@ -35,7 +41,7 @@
                         <label for="message">Message</label>
                         <input type="text" id="message" name="message">
                     </fieldset>
-                    <button type="submit">Sign Up</button>
+                    <button type="submit" name="request" value="create">Sign Up</button>
                 </form>
             </div>
         </div>

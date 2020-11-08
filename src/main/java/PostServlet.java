@@ -14,17 +14,26 @@ import java.util.LinkedList;
 @WebServlet(name = "PostServlet")
 public class PostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Get all params from request
-        String title = request.getParameter("title");
-        String username = request.getParameter("username");
-        String message = request.getParameter("message");
+        if (request.getParameter("request") != null) {
+            if (request.getParameter("request").equals("create")) {
+                // Get all params from request
+                String title = request.getParameter("title");
+                String username = request.getParameter("username");
+                String message = request.getParameter("message");
 
-        DBPost.addPost(title, username, message);
+                DBPost.addPost(title, username, message);
+            } else if (request.getParameter("request").equals("delete")) {
+                int id = Integer.parseInt(request.getParameter("id"));
+
+                DBPost.deletePost(id);
+            }
+        }
 
         response.sendRedirect("/message_board_war/posts");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get params
         ServletConfig config = getServletConfig();
         int limit = Integer.parseInt(config.getInitParameter("limit"));
 
