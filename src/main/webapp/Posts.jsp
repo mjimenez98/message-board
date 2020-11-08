@@ -38,7 +38,7 @@
                 <input type="text" id="title" name="title">
 
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username">
+                <input type="text" id="username" name="username" value= <%=user%>>
 
                 <label for="message">Message</label>
                 <input type="text" id="message" name="message">
