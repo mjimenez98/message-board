@@ -7,6 +7,11 @@
     <servlet>
         <servlet-name>PostServlet</servlet-name>
         <servlet-class>PostServlet</servlet-class>
+
+        <init-param>
+            <param-name>limit</param-name>
+            <param-value>10</param-value>
+        </init-param>
     </servlet>
 
     <servlet-mapping>
