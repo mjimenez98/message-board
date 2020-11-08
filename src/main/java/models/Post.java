@@ -3,11 +3,11 @@ package models;
 import java.time.LocalDateTime;
 
 public class Post {
-    private String title;
-    private String username;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    public String message;
+    private final String title;
+    private final String username;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
+    private final String message;
 
     public Post(String title, String username, LocalDateTime createdAt, LocalDateTime updatedAt, String message) {
         this.title = title;
