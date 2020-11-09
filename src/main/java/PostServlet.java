@@ -21,11 +21,11 @@ public class PostServlet extends HttpServlet {
                 String username = request.getParameter("username");
                 String message = request.getParameter("message");
 
-                DBPost.addPost(title, username, message);
+                Post createdPost = DBPost.createPost(title, username, message);
             } else if (request.getParameter("request").equals("delete")) {
                 int id = Integer.parseInt(request.getParameter("id"));
 
-                DBPost.deletePost(id);
+                Post deletedPost = DBPost.deletePost(id);
             }
         }
 

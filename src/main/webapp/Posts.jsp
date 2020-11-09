@@ -21,7 +21,7 @@
                     for(Post post : posts) {
             %>
                         <p><%= post.getTitle() + " - " + post.getUsername() %></p>
-                        <p><%= post.getMessage()%></p>
+                        <p><%= post.getMessage() %></p>
                         <%
                             if (user != null && user.equals(post.getUsername())) { %>
                                 <form action="posts" method="post">
