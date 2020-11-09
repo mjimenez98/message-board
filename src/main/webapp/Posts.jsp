@@ -24,11 +24,11 @@
                         <p><%= post.getMessage()%></p>
                         <%
                             if (user != null && user.equals(post.getUsername())) { %>
-                            <form action="posts" method="post">
-                                <input type="hidden" name="id" value="<%= post.getId() %>">
-                                <input type="submit" name="request" class="btn button-color" value="delete">
-                            </form>
-                        <% } %>
+                                <form action="posts" method="post">
+                                    <input type="hidden" name="id" value="<%= post.getId() %>">
+                                    <input type="submit" name="request" class="btn button-color" value="delete">
+                                </form>
+                        <%  } %>
                         <hr/>
             <%
                     }
@@ -44,8 +44,7 @@
                         <label for="title">Title</label>
                         <input type="text" id="title" name="title">
 
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" value=<%= user %>>
+                        <input type="hidden" name="username" value="<%= user %>">
 
                         <label for="message">Message</label>
                         <input type="text" id="message" name="message">
