@@ -13,6 +13,13 @@
                 response.sendRedirect("Login.jsp");
             } else user = (String) session.getAttribute("user");
         %>
+        <%
+            if (session.getAttribute("error") != null) {
+        %>
+                <div class="row">
+                    <h1 style="background-color:tomato;"><%= session.getAttribute("error") %></h1>
+                </div>
+        <% } %>
         <div class="row">
             <h1>Posts</h1>
             <%

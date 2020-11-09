@@ -8,12 +8,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.LinkedList;
 
 @WebServlet(name = "PostServlet")
 public class PostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        session.setAttribute("error", null);
+
         if (request.getParameter("request") != null) {
             if (request.getParameter("request").equals("create")) {
                 // Get all params from request
@@ -22,10 +26,14 @@ public class PostServlet extends HttpServlet {
                 String message = request.getParameter("message");
 
                 Post createdPost = DBPost.createPost(title, username, message);
+                if (createdPost == null)
+                    session.setAttribute("error", "Could not create post");
             } else if (request.getParameter("request").equals("delete")) {
                 int id = Integer.parseInt(request.getParameter("id"));
 
                 Post deletedPost = DBPost.deletePost(id);
+                if (deletedPost == null)
+                    session.setAttribute("error", "Could not delete post");
             }
         }
 
