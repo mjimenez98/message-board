@@ -6,21 +6,27 @@
         <title>Message Board</title>
     </head>
     <body>
+        <%
+            // Allow access only if session exists
+            String user = null;
+            if (session.getAttribute("user") == null) {
+                response.sendRedirect("Login.jsp");
+            } else user = (String) session.getAttribute("user");
+        %>
         <div class="row">
             <h1>Posts</h1>
             <%
                 LinkedList<Post> posts = (LinkedList<Post>) request.getAttribute("posts");
-
                 if (request.getAttribute("posts") != null) {
                     for(Post post : posts) {
             %>
-                <p><%= post.getTitle() + " - " + post.getUsername() %></p>
-                <p><%= post.getMessage()%></p>
-                <form action="posts" method="post">
-                    <input type="hidden" name="id" value="<%= post.getId() %>">
-                    <input type="submit" name="request" class="btn button-color" value="delete">
-                </form>
-                <hr/>
+                        <p><%= post.getTitle() + " - " + post.getUsername() %></p>
+                        <p><%= post.getMessage()%></p>
+                        <form action="posts" method="post">
+                            <input type="hidden" name="id" value="<%= post.getId() %>">
+                            <input type="submit" name="request" class="btn button-color" value="delete">
+                        </form>
+                        <hr/>
             <%
                     }
                 }
@@ -36,12 +42,15 @@
                         <input type="text" id="title" name="title">
 
                         <label for="username">Username</label>
-                        <input type="text" id="username" name="username">
+                        <input type="text" id="username" name="username" value=<%= user %>>
 
                         <label for="message">Message</label>
                         <input type="text" id="message" name="message">
                     </fieldset>
-                    <button type="submit" name="request" value="create">Sign Up</button>
+                    <button type="submit" name="request" value="create">Create</button>
+                </form>
+                <form action="<%=response.encodeURL("LogoutServlet")%>" method="post">
+                    <input type="submit" value="Logout">
                 </form>
             </div>
         </div>
