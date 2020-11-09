@@ -22,10 +22,13 @@
             %>
                         <p><%= post.getTitle() + " - " + post.getUsername() %></p>
                         <p><%= post.getMessage()%></p>
-                        <form action="posts" method="post">
-                            <input type="hidden" name="id" value="<%= post.getId() %>">
-                            <input type="submit" name="request" class="btn button-color" value="delete">
-                        </form>
+                        <%
+                            if (user != null && user.equals(post.getUsername())) { %>
+                            <form action="posts" method="post">
+                                <input type="hidden" name="id" value="<%= post.getId() %>">
+                                <input type="submit" name="request" class="btn button-color" value="delete">
+                            </form>
+                        <% } %>
                         <hr/>
             <%
                     }
@@ -49,7 +52,7 @@
                     </fieldset>
                     <button type="submit" name="request" value="create">Create</button>
                 </form>
-                <form action="<%=response.encodeURL("LogoutServlet")%>" method="post">
+                <form action="<%= response.encodeURL("LogoutServlet") %>" method="post">
                     <input type="submit" value="Logout">
                 </form>
             </div>
