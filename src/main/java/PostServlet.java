@@ -35,6 +35,12 @@ public class PostServlet extends HttpServlet {
                 if (deletedPost == null)
                     session.setAttribute("error", "Could not delete post");
             }
+
+             else if (request.getParameter("request").equals("edit")) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                String editedMessage = request.getParameter("editMessage");
+                DBPost.updatePost(id,editedMessage);
+            }
         }
 
         response.sendRedirect("/message_board_war/posts");
