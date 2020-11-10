@@ -33,6 +33,8 @@
                             if (user != null && user.equals(post.getUsername())) { %>
                                 <form action="posts" method="post">
                                     <input type="hidden" name="id" value="<%= post.getId() %>">
+                                    <input type="text" id="editMessage" name="editMessage">
+                                    <button type="submit" name="request" class="btn button-color" value ="edit">🖋</button>
                                     <input type="submit" name="request" class="btn button-color" value="delete">
                                 </form>
                         <%  } %>
