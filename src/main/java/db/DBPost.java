@@ -185,4 +185,28 @@ public class DBPost {
 
         return null;
     }
+
+    public static void updatePost(int idPost, String editedMessage) {
+        try {
+            // Initialize the database
+            Connection con = DBConnection.getConnection();
+
+            // SQL query
+            query = "UPDATE post SET message = ? WHERE id = ?";
+            st = con.prepareStatement(query);
+            st.setString(1, editedMessage);
+            st.setString(2, String.valueOf(idPost));
+
+            // Execute the insert command using executeUpdate() to make changes in database
+            st.executeUpdate();
+
+            // Close all the connections
+            st.close();
+            con.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
