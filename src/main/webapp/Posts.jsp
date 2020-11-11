@@ -45,7 +45,7 @@
         <hr/>
         <div class="row">
             <div class="col-md-12">
-                <form action="posts" method="post">
+                <form action="posts" method="post" enctype="multipart/form-data">
                     <h1> Create a Post </h1>
                     <fieldset>
                         <label for="title">Title</label>
@@ -55,6 +55,9 @@
 
                         <label for="message">Message</label>
                         <input type="text" id="message" name="message">
+
+                        <label for="file">Attach a file:</label>
+                        <input type="file" id="file" name="file" size="50"/>
                     </fieldset>
                     <button type="submit" name="request" value="create">Create</button>
                 </form>

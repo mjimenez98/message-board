@@ -22,7 +22,7 @@ public class DBPost {
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "SELECT * FROM post ORDER BY created_at DESC LIMIT ?";
+            query = "SELECT * FROM Posts ORDER BY created_at DESC LIMIT ?";
             st = con.prepareStatement(query);
             st.setInt(1, limit);
 
@@ -32,7 +32,7 @@ public class DBPost {
             while(rs.next()) {
                 assert false;
                 posts.add(new Post(
-                        rs.getInt("id"),
+                        rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("username"),
                         LocalDateTime.parse(rs.getString("created_at"), formatter),
@@ -60,7 +60,7 @@ public class DBPost {
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "SELECT * FROM post WHERE id = ?";
+            query = "SELECT * FROM Posts WHERE id = ?";
             st = con.prepareStatement(query);
             st.setInt(1, id);
 
@@ -68,7 +68,7 @@ public class DBPost {
 
             while(rs.next()) {
                 post = new Post(
-                        rs.getInt("id"),
+                        rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("username"),
                         LocalDateTime.parse(rs.getString("created_at"), formatter),
@@ -96,7 +96,7 @@ public class DBPost {
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "SELECT * FROM post WHERE title = ? AND username = ? AND message = ?";
+            query = "SELECT * FROM Posts WHERE title = ? AND username = ? AND message = ?";
             st = con.prepareStatement(query);
             st.setString(1, title);
             st.setString(2, username);
@@ -106,7 +106,7 @@ public class DBPost {
 
             while(rs.next()) {
                 post = new Post(
-                        rs.getInt("id"),
+                        rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("username"),
                         LocalDateTime.parse(rs.getString("created_at"), formatter),
@@ -137,7 +137,7 @@ public class DBPost {
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "INSERT INTO post (title, username, message) values(?, ?, ?)";
+            query = "INSERT INTO Posts (title, username, message) values(?, ?, ?)";
             st = con.prepareStatement(query);
             st.setString(1, title);
             st.setString(2, username);
@@ -167,7 +167,7 @@ public class DBPost {
             Post deletedPost = getPost(id);
 
             // SQL query
-            query = "DELETE FROM post WHERE id = ?";
+            query = "DELETE FROM Posts WHERE id = ?";
             st = con.prepareStatement(query);
             st.setInt(1, id);
 

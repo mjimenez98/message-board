@@ -1,18 +1,19 @@
+import db.DBAttachment;
 import db.DBPost;
 import models.Post;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 
 @WebServlet(name = "PostServlet")
+@MultipartConfig(maxFileSize = 16177215) // 16 MB
 public class PostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -24,10 +25,32 @@ public class PostServlet extends HttpServlet {
                 String title = request.getParameter("title");
                 String username = request.getParameter("username");
                 String message = request.getParameter("message");
+                Part filePart = request.getPart("file");
 
+                // Create post
                 Post createdPost = DBPost.createPost(title, username, message);
+
                 if (createdPost == null)
                     session.setAttribute("error", "Could not create post");
+                else {
+                    if (filePart != null) {
+                        String filename = filePart.getName();
+                        int size = (int) filePart.getSize();
+                        String contentType = filePart.getContentType();
+                        InputStream file = filePart.getInputStream();
+                        int postId = createdPost.getId();
+
+                        // Create attachment
+                        DBAttachment.createAttachment(postId, file, size, filename, contentType);
+
+                        // TO-DO
+                        // Check if it was done succesfully
+                        // Create Attachment model class
+                        // Display attachment in view
+                        // Edit attachment and mark post as updated
+                        // Delete attachment
+                    }
+                }
             } else if (request.getParameter("request").equals("delete")) {
                 int id = Integer.parseInt(request.getParameter("id"));
 
