@@ -46,10 +46,15 @@ public class PostServlet extends HttpServlet {
                 String editedMessage = request.getParameter("editMessage");
                 DBPost.updatePost(id, editedMessage);
                 String editedTitle = request.getParameter("editTitle");
-                DBPost.updatePost(id, editedMessage,editedTitle);
+
+            if (editedMessage.equals("") || editedTitle.equals("")) {
+                    session.setAttribute("error", "Could not edit post");
+
+            } else
+                DBPost.updatePost(id, editedMessage, editedTitle);
                 session.setAttribute("editMessage", "");
             }
-        }
+            }
 
         response.sendRedirect("/message_board_war/posts");
     }
