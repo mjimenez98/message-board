@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
 @WebServlet(name = "PostServlet")
@@ -48,6 +50,25 @@ public class PostServlet extends HttpServlet {
         LinkedList<Post> posts = DBPost.getPosts(limit);
         request.setAttribute("posts", posts);
 
+        if (request.getParameter("request") != null) {
+            if (request.getParameter("request").equals("search")) {
+                String username = request.getParameter("user");
+                String fromDate = request.getParameter("fromDate");
+                String toDate = request.getParameter("toDate");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:'00'");
+                fromDate = ((fromDate != "") ? LocalDateTime.parse(fromDate).format(formatter) : null);
+                toDate = ((toDate != "") ? LocalDateTime.parse(toDate).format(formatter) : null);
+                String[] hashtags = request.getParameter("hashtags").split(",");
+                if (hashtags[0] != "") {
+                    for (int i = 0; i < hashtags.length; i++) {
+                        hashtags[i] = hashtags[i].replaceAll("\\s+", "");
+                        hashtags[i] = "%#" + hashtags[i] + "%";
+                    }
+                }
+                LinkedList<Post> searchResults = DBPost.getPosts(username, fromDate, toDate, hashtags);
+                request.setAttribute("searchResults", searchResults);
+            }
+        }
         RequestDispatcher rd = request.getRequestDispatcher("Posts.jsp");
         rd.forward(request, response);
     }

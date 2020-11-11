@@ -5,9 +5,13 @@ import models.Post;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class DBPost {
     private static String query = null;
@@ -29,7 +33,7 @@ public class DBPost {
             ResultSet rs = st.executeQuery();
 
             // Go through every result in set, create Post object and add it to linked list
-            while(rs.next()) {
+            while (rs.next()) {
                 assert false;
                 posts.add(new Post(
                         rs.getInt("id"),
@@ -44,8 +48,7 @@ public class DBPost {
             rs.close();
             st.close();
             con.close();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -66,7 +69,7 @@ public class DBPost {
 
             ResultSet rs = st.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
                 post = new Post(
                         rs.getInt("id"),
                         rs.getString("title"),
@@ -80,8 +83,7 @@ public class DBPost {
             rs.close();
             st.close();
             con.close();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -104,7 +106,7 @@ public class DBPost {
 
             ResultSet rs = st.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
                 post = new Post(
                         rs.getInt("id"),
                         rs.getString("title"),
@@ -118,12 +120,96 @@ public class DBPost {
             rs.close();
             st.close();
             con.close();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return post;
+    }
+
+    public static LinkedList<Post> getPosts(String user, String fromDate, String toDate, String[] hashtags) {
+        LinkedList<Post> posts = new LinkedList<>();
+
+        try {
+            // Initialize the database
+            Connection con = DBConnection.getConnection();
+            Map<Integer, String> statementParams = new HashMap<>();
+            // SQL query
+            query = "SELECT * FROM post";
+
+            boolean firstCondition = true;
+            int currentParamIndex = 1;
+            if (user != null && user != "") {
+                firstCondition = false;
+                query += " WHERE ";
+                query += " username = ?";
+                statementParams.put(currentParamIndex, user);
+                currentParamIndex++;
+            }
+            if (fromDate != null) {
+                query += firstCondition ? " WHERE " : " AND ";
+                if (firstCondition) {
+                    firstCondition = false;
+                }
+                query += " created_at >= ? ";
+                statementParams.put(currentParamIndex, fromDate);
+                currentParamIndex++;
+            }
+            if (toDate != null) {
+                query += firstCondition ? " WHERE " : " AND ";
+                if (firstCondition) {
+                    firstCondition = false;
+                }
+                query += " created_at <= ? ";
+                statementParams.put(currentParamIndex, toDate);
+                currentParamIndex++;
+            }
+            if (hashtags[0] != "") {
+                query += firstCondition ? " WHERE " : " AND ";
+                query += "(message LIKE ?";
+                statementParams.put(currentParamIndex, hashtags[0]);
+                currentParamIndex++;
+                for (int i = 1; i < hashtags.length; i++) {
+                    query += " OR message LIKE ? ";
+                    statementParams.put(currentParamIndex, hashtags[i]);
+                    currentParamIndex++;
+                }
+                query += ")";
+            }
+            query += " ORDER BY created_at DESC";
+
+            st = con.prepareStatement(query);
+
+            Iterator it = statementParams.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry) it.next();
+                st.setString((int) pair.getKey(), (String) pair.getValue());
+                it.remove(); // avoids a ConcurrentModificationException
+            }
+
+            ResultSet rs = st.executeQuery();
+
+            // Go through every result in set, create Post object and add it to linked list
+            while (rs.next()) {
+                assert false;
+                posts.add(new Post(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("username"),
+                        LocalDateTime.parse(rs.getString("created_at"), formatter),
+                        LocalDateTime.parse(rs.getString("updated_at"), formatter),
+                        rs.getString("message")));
+            }
+
+            // Close all connections
+            rs.close();
+            st.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return posts;
     }
 
     public static Post createPost(String title, String username, String message) {
@@ -151,8 +237,7 @@ public class DBPost {
             con.close();
 
             post = getPost(title, username, message);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -178,8 +263,7 @@ public class DBPost {
             con.close();
 
             return deletedPost;
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
