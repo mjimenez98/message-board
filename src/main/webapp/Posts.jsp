@@ -31,7 +31,7 @@
     %>
     <form action="posts" method="post">
         <% if (session.getAttribute("editMessage") != null && session.getAttribute("editMessage") == (Integer) post.getId()) {%>
-        <input type="text" name="editTitle" value="<%=post.getTitle()%>">  <%=post.getUsername() %>
+        <p><input type="text" name="editTitle" value="<%=post.getTitle()%>">  <%=post.getUsername() %></p>
         <input type="text" name="editMessage" value="<%=post.getMessage()%>">        
         <input type="submit" name="request" class="btn button-color" value="save">
         <%} else {%>
