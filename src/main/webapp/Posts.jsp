@@ -33,7 +33,7 @@
         <p><%= post.getTitle() + " - " + post.getUsername() %>
         </p>
         <% if (session.getAttribute("editMessage") != null && session.getAttribute("editMessage") == (Integer) post.getId()) {%>
-        <input type="text" name="editMessage" value= <%=post.getMessage()%>>
+        <input type="text" name="editMessage" value="<%=post.getMessage()%>">
         <input type="submit" name="request" class="btn button-color" value="save">
         <%} else {%>
         <p><%=post.getMessage()%>
