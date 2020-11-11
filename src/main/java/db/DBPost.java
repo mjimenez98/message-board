@@ -186,17 +186,18 @@ public class DBPost {
         return null;
     }
 
-    public static void updatePost(int idPost, String editedMessage) {
+    public static void updatePost(int idPost, String editedMessage,String editedTitle) {
         try {
             // Initialize the database
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "UPDATE post SET message = ? WHERE id = ?";
+            query = "UPDATE post SET message = ?, title = ? WHERE id = ?";
             st = con.prepareStatement(query);
             st.setString(1, editedMessage);
-            st.setString(2, String.valueOf(idPost));
-
+            st.setString(2, editedTitle);
+            st.setString(3, String.valueOf(idPost));
+            
             // Execute the insert command using executeUpdate() to make changes in database
             st.executeUpdate();
 

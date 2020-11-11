@@ -30,15 +30,16 @@
             for (Post post : posts) {
     %>
     <form action="posts" method="post">
-        <p><%= post.getTitle() + " - " + post.getUsername() %>
-        </p>
         <% if (session.getAttribute("editMessage") != null && session.getAttribute("editMessage") == (Integer) post.getId()) {%>
-        <input type="text" name="editMessage" value="<%=post.getMessage()%>">
+        <input type="text" name="editTitle" value="<%=post.getTitle()%>">  <%=post.getUsername() %>
+        <input type="text" name="editMessage" value="<%=post.getMessage()%>">        
         <input type="submit" name="request" class="btn button-color" value="save">
         <%} else {%>
-        <p><%=post.getMessage()%>
-        </p>
-        <%}%>
+            <p><%= post.getTitle() + " - " + post.getUsername() %>
+            </p>
+            <p><%=post.getMessage()%>
+            </p>
+            <%}%>
         <%if (user != null && user.equals(post.getUsername())) { %>
         <input type="hidden" name="id" value="<%= post.getId() %>">
         <input type="submit" name="request" class="btn button-color" value="edit">

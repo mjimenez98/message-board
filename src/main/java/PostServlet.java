@@ -39,11 +39,14 @@ public class PostServlet extends HttpServlet {
              else if (request.getParameter("request").equals("edit")) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 session.setAttribute("editMessage", id);
+                session.setAttribute("editTitle",id);
             }
              else if(request.getParameter("request").equals("save")) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 String editedMessage = request.getParameter("editMessage");
                 DBPost.updatePost(id, editedMessage);
+                String editedTitle = request.getParameter("editTitle");
+                DBPost.updatePost(id, editedMessage,editedTitle);
                 session.setAttribute("editMessage", "");
             }
         }
