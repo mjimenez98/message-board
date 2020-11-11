@@ -1,5 +1,6 @@
 <%@ page import="models.Post" %>
 <%@ page import="java.util.LinkedList" %>
+<%@ page import="models.Attachment" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
@@ -25,14 +26,24 @@
             <%
                 LinkedList<Post> posts = (LinkedList<Post>) request.getAttribute("posts");
                 if (request.getAttribute("posts") != null) {
-                    for(Post post : posts) {
+                    for (Post post : posts) {
+                        Attachment attachment = post.getAttachment();
             %>
                         <p><%= post.getTitle() + " - " + post.getUsername() %></p>
                         <p><%= post.getMessage() %></p>
+                        <% if (attachment != null) { %>
+                            <div class="media">
+                                <img src="..." class="mr-3" alt="...">
+                                <div class="media-body">
+                                    <h5 class="mt-0"><%= attachment.getName() %></h5>
+                                    <%= attachment.getContentType() + " - " +  attachment.printSize() %>
+                                </div>
+                            </div>
+                        <% } %>
                         <%
                             if (user != null && user.equals(post.getUsername())) { %>
                                 <form action="posts" method="post">
-                                    <input type="hidden" name="id" value="<%= post.getId() %>">
+                                    <input type="hidden" name="postId" value="<%= post.getPostId() %>">
                                     <input type="submit" name="request" class="btn button-color" value="delete">
                                 </form>
                         <%  } %>

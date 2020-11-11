@@ -10,6 +10,8 @@ public class Post {
     private final LocalDateTime updatedAt;
     private final String message;
 
+    private Attachment attachment;
+
     public Post(int postId, String title, String username, LocalDateTime createdAt, LocalDateTime updatedAt, String message) {
         this.postId = postId;
         this.title = title;
@@ -17,9 +19,18 @@ public class Post {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.message = message;
+        this.attachment = null;
     }
 
-    public int getId() { return postId; }
+    public int getPostId() { return postId; }
+
+    public Attachment getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(Attachment attachment) {
+        this.attachment = attachment;
+    }
 
     public String getTitle() {
         return title;

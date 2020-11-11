@@ -1,16 +1,16 @@
 package models;
 
-import java.io.InputStream;
+import java.sql.Blob;
 
 public class Attachment {
     private final int attachmentId;
     private final int postId;
     private final int size;
-    private final InputStream file;
+    private final Blob file;
     private final String name;
     private final String type;
 
-    public Attachment(int attachmentId, int postId, int size, InputStream file, String name, String type) {
+    public Attachment(int attachmentId, int postId, int size, Blob file, String name, String type) {
         this.attachmentId = attachmentId;
         this.postId = postId;
         this.size = size;
@@ -31,15 +31,22 @@ public class Attachment {
         return size;
     }
 
-    public InputStream getFile() {
+    public Blob getFile() {
         return file;
     }
 
-    public String getFilename() {
+    public String getName() {
         return name;
     }
 
     public String getContentType() {
         return type;
+    }
+
+    public String printSize() {
+        if (size < 1000000)
+            return String.format("%.2f", size / 1000.0) + "KB";
+
+        return String.format("%.2f", size / 1000000.0) + "MB";
     }
 }

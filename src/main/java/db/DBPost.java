@@ -31,13 +31,17 @@ public class DBPost {
             // Go through every result in set, create Post object and add it to linked list
             while(rs.next()) {
                 assert false;
-                posts.add(new Post(
+                Post post = new Post(
                         rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("username"),
                         LocalDateTime.parse(rs.getString("created_at"), formatter),
                         LocalDateTime.parse(rs.getString("updated_at"), formatter),
-                        rs.getString("message")));
+                        rs.getString("message"));
+
+                // Set attachment
+                posts.add(post);
+                post.setAttachment(DBAttachment.getAttachment(post.getPostId()));
             }
 
             // Close all connections
@@ -74,6 +78,9 @@ public class DBPost {
                         LocalDateTime.parse(rs.getString("created_at"), formatter),
                         LocalDateTime.parse(rs.getString("updated_at"), formatter),
                         rs.getString("message"));
+
+                // Set attachment
+                post.setAttachment(DBAttachment.getAttachment(post.getPostId()));
             }
 
             // Close all connections
@@ -112,6 +119,9 @@ public class DBPost {
                         LocalDateTime.parse(rs.getString("created_at"), formatter),
                         LocalDateTime.parse(rs.getString("updated_at"), formatter),
                         rs.getString("message"));
+
+                // Set attachment
+                post.setAttachment(DBAttachment.getAttachment(post.getPostId()));
             }
 
             // Close all connections
@@ -161,6 +171,9 @@ public class DBPost {
 
     public static Post deletePost(int postId) {
         try {
+            // Delete attachment dependency
+            DBAttachment.deleteAttachment(postId);
+
             // Initialize the database
             Connection con = DBConnection.getConnection();
 

@@ -39,24 +39,25 @@ public class PostServlet extends HttpServlet {
                         int size = (int) filePart.getSize();
                         String type = filePart.getContentType();
                         InputStream file = filePart.getInputStream();
-                        int postId = createdPost.getId();
+                        int postId = createdPost.getPostId();
 
                         // Create attachment
                         Attachment createdAttachment = DBAttachment.createAttachment(postId, file, size, name, type);
 
                         if (createdAttachment == null)
                             session.setAttribute("error", "Could not create attachment");
+                        else
+                            createdPost.setAttachment(createdAttachment);
 
                         // TO-DO
-                        // Display attachment in view
                         // Edit attachment and mark post as updated
                         // Delete attachment
                     }
                 }
             } else if (request.getParameter("request").equals("delete")) {
-                int id = Integer.parseInt(request.getParameter("id"));
+                int postId = Integer.parseInt(request.getParameter("postId"));
 
-                Post deletedPost = DBPost.deletePost(id);
+                Post deletedPost = DBPost.deletePost(postId);
                 if (deletedPost == null)
                     session.setAttribute("error", "Could not delete post");
             }

@@ -1,6 +1,7 @@
 package db;
 
 import models.Attachment;
+import models.Post;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -30,7 +31,7 @@ public class DBAttachment {
                         rs.getInt("attachment_id"),
                         rs.getInt("post_id"),
                         rs.getInt("size"),
-                        rs.getBinaryStream("file"),
+                        rs.getBlob("file"),
                         rs.getString("name"),
                         rs.getString("type"));
             }
@@ -80,5 +81,32 @@ public class DBAttachment {
         }
 
         return attachment;
+    }
+
+    public static Attachment deleteAttachment(int postId) {
+        try {
+            // Initialize the database
+            Connection con = DBConnection.getConnection();
+
+            Attachment deletedAttachment = getAttachment(postId);
+
+            // SQL query
+            query = "DELETE FROM Attachments WHERE post_id = ?";
+            st = con.prepareStatement(query);
+            st.setInt(1, postId);
+
+            st.executeUpdate();
+
+            // Close all the connections
+            st.close();
+            con.close();
+
+            return deletedAttachment;
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
