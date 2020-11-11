@@ -2,6 +2,7 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="models.Attachment" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
     <head>
         <title>Message Board</title>
@@ -36,7 +37,14 @@
                                 <img src="..." class="mr-3" alt="...">
                                 <div class="media-body">
                                     <h5 class="mt-0"><%= attachment.getName() %></h5>
-                                    <p><%= attachment.getContentType() + " - " +  attachment.printSize() %></p>
+                                    <p>
+                                        <%= attachment.getContentType() + " - " +  attachment.printSize()%>
+                                        <% if (post.isUpdated()) { %>
+                                            <small class="text-muted">
+                                                <%= " - Last updated on " + post.getUpdatedAt() %>
+                                            </small>
+                                        <% } %>
+                                    </p>
                                     <% if (belongsToUser) { %>
                                         <form action="posts/attachments" method="post" enctype="multipart/form-data">
                                             <input type="hidden" name="postId" value="<%= post.getPostId() %>">

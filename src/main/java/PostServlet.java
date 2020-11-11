@@ -17,6 +17,7 @@ import java.util.LinkedList;
 @MultipartConfig(maxFileSize = 16177215) // 16 MB
 public class PostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get params
         HttpSession session = request.getSession();
         session.setAttribute("error", null);
 
@@ -36,6 +37,7 @@ public class PostServlet extends HttpServlet {
                     session.setAttribute("error", "Could not create post");
                 else {
                     if (filePart.getSize() > 0) {
+                        // Get file params
                         String name = filePart.getSubmittedFileName();
                         int size = (int) filePart.getSize();
                         String type = filePart.getContentType();
@@ -54,7 +56,9 @@ public class PostServlet extends HttpServlet {
             } else if (request.getParameter("request").equals("delete")) {
                 int postId = Integer.parseInt(request.getParameter("postId"));
 
+                // Verify post was deleted
                 Post deletedPost = DBPost.deletePost(postId);
+
                 if (deletedPost == null)
                     session.setAttribute("error", "Could not delete post");
             }

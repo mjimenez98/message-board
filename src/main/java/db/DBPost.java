@@ -5,8 +5,10 @@ import models.Post;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.LinkedList;
 
 public class DBPost {
@@ -161,6 +163,38 @@ public class DBPost {
             con.close();
 
             post = getPost(title, username, message);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return post;
+    }
+
+    public static Post updatePost(int postId) {
+        Post post = null;
+
+        try {
+            // Initialize the database
+            Connection con = DBConnection.getConnection();
+
+            Date timestamp = new Date();
+            SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
+
+            // SQL query
+            query = "UPDATE Posts SET updated_at = ? WHERE post_id = ?";
+            st = con.prepareStatement(query);
+            st.setString(1, ft.format(timestamp));
+            st.setInt(2, postId);
+
+            // Execute the insert command using executeUpdate() to make changes in database
+            st.executeUpdate();
+
+            // Close all the connections
+            st.close();
+            con.close();
+
+            post = getPost(postId);
         }
         catch(Exception e) {
             e.printStackTrace();

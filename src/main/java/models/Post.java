@@ -9,6 +9,7 @@ public class Post {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final String message;
+    private final boolean isUpdated;
 
     private Attachment attachment;
 
@@ -20,6 +21,7 @@ public class Post {
         this.updatedAt = updatedAt;
         this.message = message;
         this.attachment = null;
+        this.isUpdated = updatedAt.isAfter(createdAt);
     }
 
     public int getPostId() { return postId; }
@@ -50,5 +52,9 @@ public class Post {
 
     public String getMessage() {
         return message;
+    }
+
+    public boolean isUpdated() {
+        return isUpdated;
     }
 }

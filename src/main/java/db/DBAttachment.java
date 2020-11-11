@@ -100,6 +100,7 @@ public class DBAttachment {
             st.close();
             con.close();
 
+            DBPost.updatePost(postId);
             attachment = getAttachment(postId);
         } catch(Exception e) {
             e.printStackTrace();
