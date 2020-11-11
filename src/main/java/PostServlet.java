@@ -31,11 +31,12 @@ public class PostServlet extends HttpServlet {
                 // Create post
                 Post createdPost = DBPost.createPost(title, username, message);
 
+                // Create attachment
                 if (createdPost == null)
                     session.setAttribute("error", "Could not create post");
                 else {
-                    if (filePart != null) {
-                        String name = filePart.getName();
+                    if (filePart.getSize() > 0) {
+                        String name = filePart.getSubmittedFileName();
                         int size = (int) filePart.getSize();
                         String type = filePart.getContentType();
                         InputStream file = filePart.getInputStream();
