@@ -1,5 +1,6 @@
 import db.DBAttachment;
 import db.DBPost;
+import models.Attachment;
 import models.Post;
 
 import javax.servlet.RequestDispatcher;
@@ -34,18 +35,19 @@ public class PostServlet extends HttpServlet {
                     session.setAttribute("error", "Could not create post");
                 else {
                     if (filePart != null) {
-                        String filename = filePart.getName();
+                        String name = filePart.getName();
                         int size = (int) filePart.getSize();
-                        String contentType = filePart.getContentType();
+                        String type = filePart.getContentType();
                         InputStream file = filePart.getInputStream();
                         int postId = createdPost.getId();
 
                         // Create attachment
-                        DBAttachment.createAttachment(postId, file, size, filename, contentType);
+                        Attachment createdAttachment = DBAttachment.createAttachment(postId, file, size, name, type);
+
+                        if (createdAttachment == null)
+                            session.setAttribute("error", "Could not create attachment");
 
                         // TO-DO
-                        // Check if it was done succesfully
-                        // Create Attachment model class
                         // Display attachment in view
                         // Edit attachment and mark post as updated
                         // Delete attachment

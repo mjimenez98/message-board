@@ -52,7 +52,7 @@ public class DBPost {
         return posts;
     }
 
-    public static Post getPost(int id) {
+    public static Post getPost(int postId) {
         Post post = null;
 
         try {
@@ -60,9 +60,9 @@ public class DBPost {
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "SELECT * FROM Posts WHERE id = ?";
+            query = "SELECT * FROM Posts WHERE post_id = ?";
             st = con.prepareStatement(query);
-            st.setInt(1, id);
+            st.setInt(1, postId);
 
             ResultSet rs = st.executeQuery();
 
@@ -159,17 +159,17 @@ public class DBPost {
         return post;
     }
 
-    public static Post deletePost(int id) {
+    public static Post deletePost(int postId) {
         try {
             // Initialize the database
             Connection con = DBConnection.getConnection();
 
-            Post deletedPost = getPost(id);
+            Post deletedPost = getPost(postId);
 
             // SQL query
-            query = "DELETE FROM Posts WHERE id = ?";
+            query = "DELETE FROM Posts WHERE post_id = ?";
             st = con.prepareStatement(query);
-            st.setInt(1, id);
+            st.setInt(1, postId);
 
             st.executeUpdate();
 

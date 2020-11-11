@@ -3,15 +3,15 @@ package models;
 import java.time.LocalDateTime;
 
 public class Post {
-    private final int id;
+    private final int postId;
     private final String title;
     private final String username;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final String message;
 
-    public Post(int id, String title, String username, LocalDateTime createdAt, LocalDateTime updatedAt, String message) {
-        this.id = id;
+    public Post(int postId, String title, String username, LocalDateTime createdAt, LocalDateTime updatedAt, String message) {
+        this.postId = postId;
         this.title = title;
         this.username = username;
         this.createdAt = createdAt;
@@ -19,7 +19,7 @@ public class Post {
         this.message = message;
     }
 
-    public int getId() { return id; }
+    public int getId() { return postId; }
 
     public String getTitle() {
         return title;
