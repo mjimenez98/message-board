@@ -40,12 +40,12 @@
                                     <% if (belongsToUser) { %>
                                         <form action="posts/attachments" method="post" enctype="multipart/form-data">
                                             <input type="hidden" name="postId" value="<%= post.getPostId() %>">
-                                            <input type="hidden" name="attachmentId" value="<%= attachment.getAttachmentId() %>">
 
                                             <label for="file">Update file:</label>
                                             <input type="file" name="file" size="50"/>
 
-                                            <input type="submit" name="request" class="btn button-color" value="Update">
+                                            <button type="submit" name="request" value="update">Update</button>
+                                            <button type="submit" name="request" value="delete">Delete</button>
                                         </form>
                                     <% } %>
                                 </div>
@@ -54,7 +54,7 @@
                         <% if (belongsToUser) { %>
                                 <form action="posts" method="post">
                                     <input type="hidden" name="postId" value="<%= post.getPostId() %>">
-                                    <input type="submit" name="request" class="btn button-color" value="delete">
+                                    <button type="submit" name="request" value="delete">Delete</button>
                                 </form>
                         <% } %>
                         <hr/>
