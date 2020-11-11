@@ -49,10 +49,6 @@ public class PostServlet extends HttpServlet {
                             session.setAttribute("error", "Could not create attachment");
                         else
                             createdPost.setAttachment(createdAttachment);
-
-                        // TO-DO
-                        // Edit attachment and mark post as updated
-                        // Delete attachment
                     }
                 }
             } else if (request.getParameter("request").equals("delete")) {

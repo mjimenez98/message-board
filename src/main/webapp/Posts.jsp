@@ -9,12 +9,11 @@
     <body>
         <%
             // Allow access only if session exists
-            String user = null;
             if (session.getAttribute("user") == null) {
                 response.sendRedirect("Login.jsp");
-            } else user = (String) session.getAttribute("user");
-        %>
-        <%
+            }
+            String user = (String) session.getAttribute("user");
+
             if (session.getAttribute("error") != null) {
         %>
                 <div class="row">
@@ -28,6 +27,7 @@
                 if (request.getAttribute("posts") != null) {
                     for (Post post : posts) {
                         Attachment attachment = post.getAttachment();
+                        boolean belongsToUser = (user != null && user.equals(post.getUsername()));
             %>
                         <p><%= post.getTitle() + " - " + post.getUsername() %></p>
                         <p><%= post.getMessage() %></p>
@@ -36,17 +36,27 @@
                                 <img src="..." class="mr-3" alt="...">
                                 <div class="media-body">
                                     <h5 class="mt-0"><%= attachment.getName() %></h5>
-                                    <%= attachment.getContentType() + " - " +  attachment.printSize() %>
+                                    <p><%= attachment.getContentType() + " - " +  attachment.printSize() %></p>
+                                    <% if (belongsToUser) { %>
+                                        <form action="posts/attachments" method="post" enctype="multipart/form-data">
+                                            <input type="hidden" name="postId" value="<%= post.getPostId() %>">
+                                            <input type="hidden" name="attachmentId" value="<%= attachment.getAttachmentId() %>">
+
+                                            <label for="file">Update file:</label>
+                                            <input type="file" name="file" size="50"/>
+
+                                            <input type="submit" name="request" class="btn button-color" value="Update">
+                                        </form>
+                                    <% } %>
                                 </div>
                             </div>
                         <% } %>
-                        <%
-                            if (user != null && user.equals(post.getUsername())) { %>
+                        <% if (belongsToUser) { %>
                                 <form action="posts" method="post">
                                     <input type="hidden" name="postId" value="<%= post.getPostId() %>">
                                     <input type="submit" name="request" class="btn button-color" value="delete">
                                 </form>
-                        <%  } %>
+                        <% } %>
                         <hr/>
             <%
                     }

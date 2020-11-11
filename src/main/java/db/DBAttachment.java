@@ -1,12 +1,9 @@
 package db;
 
 import models.Attachment;
-import models.Post;
 
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class DBAttachment {
     private static String query = null;
@@ -77,6 +74,34 @@ public class DBAttachment {
             attachment = getAttachment(postId);
         }
         catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return attachment;
+    }
+
+    public static Attachment updateAttachment(int postId, InputStream file, int size, String name, String type) {
+        Attachment attachment = null;
+
+        try {
+            Connection con = DBConnection.getConnection();
+
+            query = "UPDATE Attachments SET file = ?, size = ?, name = ?, type = ? WHERE post_id = ?";
+            st = con.prepareStatement(query);
+            st.setBlob(1, file);
+            st.setInt(2, size);
+            st.setString(3, name);
+            st.setString(4, type);
+            st.setInt(5, postId);
+
+            st.executeUpdate();
+
+            // Close all the connections
+            st.close();
+            con.close();
+
+            attachment = getAttachment(postId);
+        } catch(Exception e) {
             e.printStackTrace();
         }
 

@@ -16,8 +16,17 @@
             <param-value>10</param-value>
         </init-param>
     </servlet>
+    <servlet>
+        <servlet-name>AttachmentServlet</servlet-name>
+        <servlet-class>AttachmentServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>PostServlet</servlet-name>
         <url-pattern>/posts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AttachmentServlet</servlet-name>
+        <url-pattern>/posts/attachments</url-pattern>
     </servlet-mapping>
 </web-app>
