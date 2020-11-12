@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 @WebServlet(name = "PostServlet")
@@ -18,8 +17,6 @@ public class PostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.setAttribute("error", null);
-        LocalDateTime updatedTime = null;
-
 
         if (request.getParameter("request") != null) {
             if (request.getParameter("request").equals("create")) {
@@ -47,15 +44,14 @@ public class PostServlet extends HttpServlet {
                 String editedMessage = request.getParameter("editMessage");
                 String editedTitle = request.getParameter("editTitle");
 
-
                 if (editedMessage.equals("") || editedTitle.equals("")) {
                     session.setAttribute("error", "Could not edit post");
 
-                } else
-                    updatedTime = LocalDateTime.now();
-                DBPost.updatePost(id, editedMessage, editedTitle, updatedTime);
-                session.setAttribute("editTitle", "");
-                session.setAttribute("editMessage", "");
+                } else {
+                    DBPost.updatePost(id, editedMessage, editedTitle);
+                    session.setAttribute("editTitle", "");
+                    session.setAttribute("editMessage", "");
+                }
             }
         }
         response.sendRedirect("/message_board_war/posts");

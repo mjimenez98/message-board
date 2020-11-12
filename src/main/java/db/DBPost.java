@@ -181,8 +181,13 @@ public class DBPost {
         return null;
     }
 
-    public static void updatePost(int idPost, String editedMessage, String editedTitle, LocalDateTime updatedTime) {
+    public static void updatePost(int idPost, String editedMessage, String editedTitle) {
+        Post updatedPost = getPost(idPost);
+        if ((!updatedPost.getMessage().equals(editedMessage) || !(updatedPost.getTitle().equals(editedTitle)))) {
         try {
+
+            LocalDateTime updatedTime = LocalDateTime.now();
+
             // Initialize the database
             Connection con = DBConnection.getConnection();
 
@@ -207,4 +212,5 @@ public class DBPost {
             e.printStackTrace();
         }
     }
+  }
 }
