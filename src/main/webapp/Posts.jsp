@@ -39,7 +39,10 @@
             </p>
             <p><%=post.getMessage()%>
             </p>
-            <%}%>
+            <% if (post.getCreatedAt().isBefore(post.getUpdatedAt())){%>
+                <p><i>Edited <%= post.getUpdatedAt()%> </i></p>
+                <%  }
+                }%>
         <%if (user != null && user.equals(post.getUsername())) { %>
         <input type="hidden" name="id" value="<%= post.getId() %>">
         <input type="submit" name="request" class="btn button-color" value="edit">
