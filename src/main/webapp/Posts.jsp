@@ -31,18 +31,20 @@
     %>
     <form action="posts" method="post">
         <% if (session.getAttribute("editMessage") != null && session.getAttribute("editMessage") == (Integer) post.getId()) {%>
-        <p><input type="text" name="editTitle" value="<%=post.getTitle()%>">  <%=post.getUsername() %></p>
-        <input type="text" name="editMessage" value="<%=post.getMessage()%>">        
+        <p><input type="text" name="editTitle" value="<%=post.getTitle()%>"> <%=post.getUsername() %>
+        </p>
+        <input type="text" name="editMessage" value="<%=post.getMessage()%>">
         <input type="submit" name="request" class="btn button-color" value="save">
         <%} else {%>
-            <p><%= post.getTitle() + " - " + post.getUsername() %>
-            </p>
-            <p><%=post.getMessage()%>
-            </p>
-            <% if (post.getCreatedAt().isBefore(post.getUpdatedAt())){%>
-                <p><i>Edited <%= post.getUpdatedAt()%> </i></p>
-                <%  }
-                }%>
+        <p><%= post.getTitle() + " - " + post.getUsername() %>
+        </p>
+        <p><%=post.getMessage()%>
+        </p>
+        <% if (post.getCreatedAt().isBefore(post.getUpdatedAt())) {%>
+        <p><i>Edited <%= post.getUpdatedAt()%>
+        </i></p>
+        <% }
+        }%>
         <%if (user != null && user.equals(post.getUsername())) { %>
         <input type="hidden" name="id" value="<%= post.getId() %>">
         <input type="submit" name="request" class="btn button-color" value="edit">

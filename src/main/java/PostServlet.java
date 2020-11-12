@@ -37,31 +37,27 @@ public class PostServlet extends HttpServlet {
                 Post deletedPost = DBPost.deletePost(id);
                 if (deletedPost == null)
                     session.setAttribute("error", "Could not delete post");
-            }
-
-             else if (request.getParameter("request").equals("edit")) {
+            } else if (request.getParameter("request").equals("edit")) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 session.setAttribute("editMessage", id);
-                session.setAttribute("editTitle",id);
-                session.setAttribute("updatedTime",id);
-            }
-             else if(request.getParameter("request").equals("save")) {
+                session.setAttribute("editTitle", id);
+                session.setAttribute("updatedTime", id);
+            } else if (request.getParameter("request").equals("save")) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 String editedMessage = request.getParameter("editMessage");
                 String editedTitle = request.getParameter("editTitle");
-                
 
-            if (editedMessage.equals("") || editedTitle.equals("")) {
+
+                if (editedMessage.equals("") || editedTitle.equals("")) {
                     session.setAttribute("error", "Could not edit post");
 
-            } else
+                } else
                     updatedTime = LocalDateTime.now();
-                    DBPost.updatePost(id, editedMessage, editedTitle,updatedTime);
-                    session.setAttribute("editTitle", "");
-                    session.setAttribute("editMessage", "");
+                DBPost.updatePost(id, editedMessage, editedTitle, updatedTime);
+                session.setAttribute("editTitle", "");
+                session.setAttribute("editMessage", "");
             }
-            }
-
+        }
         response.sendRedirect("/message_board_war/posts");
     }
 
