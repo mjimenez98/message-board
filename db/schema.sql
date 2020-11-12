@@ -3,7 +3,7 @@ USE message_board;
 
 SET GLOBAL max_allowed_packet = 16177215;
 
-CREATE TABLE Posts (
+CREATE TABLE posts (
     post_id INTEGER AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE Posts (
     message TEXT NOT NULL
 );
 
-CREATE TABLE Attachments (
+CREATE TABLE attachments (
     attachment_id INTEGER AUTO_INCREMENT PRIMARY KEY,
     post_id INTEGER NOT NULL,
     file MEDIUMBLOB NOT NULL,

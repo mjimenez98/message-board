@@ -34,7 +34,8 @@
                         <p><%= post.getMessage() %></p>
                         <% if (attachment != null) { %>
                             <div class="media">
-                                <img src="..." class="mr-3" alt="...">
+                                <img src="${pageContext.request.contextPath}/images/attachment.png" class="mr-3"
+                                     alt="attachment" width="16" height="16">
                                 <div class="media-body">
                                     <h5 class="mt-0"><%= attachment.getName() %></h5>
                                     <p>

@@ -24,7 +24,7 @@ public class DBPost {
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "SELECT * FROM Posts ORDER BY created_at DESC LIMIT ?";
+            query = "SELECT * FROM posts ORDER BY created_at DESC LIMIT ?";
             st = con.prepareStatement(query);
             st.setInt(1, limit);
 
@@ -66,7 +66,7 @@ public class DBPost {
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "SELECT * FROM Posts WHERE post_id = ?";
+            query = "SELECT * FROM posts WHERE post_id = ?";
             st = con.prepareStatement(query);
             st.setInt(1, postId);
 
@@ -105,7 +105,7 @@ public class DBPost {
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "SELECT * FROM Posts WHERE title = ? AND username = ? AND message = ?";
+            query = "SELECT * FROM posts WHERE title = ? AND username = ? AND message = ?";
             st = con.prepareStatement(query);
             st.setString(1, title);
             st.setString(2, username);
@@ -149,7 +149,7 @@ public class DBPost {
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "INSERT INTO Posts (title, username, message) values(?, ?, ?)";
+            query = "INSERT INTO posts (title, username, message) values(?, ?, ?)";
             st = con.prepareStatement(query);
             st.setString(1, title);
             st.setString(2, username);
@@ -182,7 +182,7 @@ public class DBPost {
             SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
 
             // SQL query
-            query = "UPDATE Posts SET updated_at = ? WHERE post_id = ?";
+            query = "UPDATE posts SET updated_at = ? WHERE post_id = ?";
             st = con.prepareStatement(query);
             st.setString(1, ft.format(timestamp));
             st.setInt(2, postId);
@@ -214,7 +214,7 @@ public class DBPost {
             Post deletedPost = getPost(postId);
 
             // SQL query
-            query = "DELETE FROM Posts WHERE post_id = ?";
+            query = "DELETE FROM posts WHERE post_id = ?";
             st = con.prepareStatement(query);
             st.setInt(1, postId);
 

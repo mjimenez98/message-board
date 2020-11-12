@@ -17,7 +17,7 @@ public class DBAttachment {
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "SELECT * FROM Attachments WHERE post_id = ?";
+            query = "SELECT * FROM attachments WHERE post_id = ?";
             st = con.prepareStatement(query);
             st.setInt(1, postId);
 
@@ -56,7 +56,7 @@ public class DBAttachment {
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "INSERT INTO Attachments (post_id, file, size, name, type) values(?, ?, ?, ?, ?)";
+            query = "INSERT INTO attachments (post_id, file, size, name, type) values(?, ?, ?, ?, ?)";
             st = con.prepareStatement(query);
             st.setInt(1, postId);
             st.setBlob(2, file);
@@ -86,7 +86,7 @@ public class DBAttachment {
         try {
             Connection con = DBConnection.getConnection();
 
-            query = "UPDATE Attachments SET file = ?, size = ?, name = ?, type = ? WHERE post_id = ?";
+            query = "UPDATE attachments SET file = ?, size = ?, name = ?, type = ? WHERE post_id = ?";
             st = con.prepareStatement(query);
             st.setBlob(1, file);
             st.setInt(2, size);
@@ -117,7 +117,7 @@ public class DBAttachment {
             Attachment deletedAttachment = getAttachment(postId);
 
             // SQL query
-            query = "DELETE FROM Attachments WHERE post_id = ?";
+            query = "DELETE FROM attachments WHERE post_id = ?";
             st = con.prepareStatement(query);
             st.setInt(1, postId);
 
