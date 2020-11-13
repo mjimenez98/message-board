@@ -30,8 +30,33 @@
                         Attachment attachment = post.getAttachment();
                         boolean belongsToUser = (user != null && user.equals(post.getUsername()));
             %>
-                        <p><%= post.getTitle() + " - " + post.getUsername() %></p>
-                        <p><%= post.getMessage() %></p>
+                        <form action="posts" method="post">
+                            <% if (session.getAttribute("editMessage") != null &&
+                                    session.getAttribute("editMessage") == (Integer) post.getPostId()) {
+                            %>
+                                 <textarea type="text" name="editTitle"><%= post.getTitle() %></textarea>
+
+                                 <%= " - " + post.getUsername() %>
+
+                                 <textarea type="text" name="editMessage"><%= post.getMessage() %></textarea>
+
+                                 <button type="submit" name="request" value="save">Save Post</button>
+                            <% }
+                               else {
+                            %>
+                                <p><%= post.getTitle() + " - " + post.getUsername() %></p>
+                                <p><%= post.getMessage() %></p>
+                                <% if (post.getCreatedAt().isBefore(post.getUpdatedAt())) { %>
+                                     <p><i>Edited <%= post.getUpdatedAt() %></i></p>
+                            <%     }
+                               }
+                            %>
+                            <% if (belongsToUser) { %>
+                                <input type="hidden" name="postId" value="<%= post.getPostId() %>">
+                                <button type="submit" name="request" value="edit">Edit Post</button>
+                                <button type="submit" name="request" value="delete">Delete Post</button>
+                            <% } %>
+                        </form>
                         <% if (attachment != null) { %>
                             <div class="media">
                                 <img src="${pageContext.request.contextPath}/images/attachment.png" class="mr-3"
@@ -53,18 +78,12 @@
                                             <label for="file">Update file:</label>
                                             <input type="file" name="file" size="50"/>
 
-                                            <button type="submit" name="request" value="update">Update</button>
-                                            <button type="submit" name="request" value="delete">Delete</button>
+                                            <button type="submit" name="request" value="update">Update Attachment</button>
+                                            <button type="submit" name="request" value="delete">Delete Attachment</button>
                                         </form>
                                     <% } %>
                                 </div>
                             </div>
-                        <% } %>
-                        <% if (belongsToUser) { %>
-                                <form action="posts" method="post">
-                                    <input type="hidden" name="postId" value="<%= post.getPostId() %>">
-                                    <button type="submit" name="request" value="delete">Delete</button>
-                                </form>
                         <% } %>
                         <hr/>
             <%
