@@ -199,6 +199,37 @@ public class DBPost {
         return post;
     }
 
+    public static void updatePost(int postId, String editedMessage, String editedTitle) {
+        Post updatedPost = getPost(postId);
+
+        if (!updatedPost.getMessage().equals(editedMessage) || !updatedPost.getTitle().equals(editedTitle)) {
+            try {
+                Date timestamp = new Date();
+                SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
+
+                // Initialize the database
+                Connection con = DBConnection.getConnection();
+
+                // SQL query
+                query = "UPDATE posts SET message = ?, title = ?, updated_at = ? WHERE post_id = ?";
+                st = con.prepareStatement(query);
+                st.setString(1, editedMessage);
+                st.setString(2, editedTitle);
+                st.setString(3, ft.format(timestamp));
+                st.setInt(4, postId);
+
+                // Execute the insert command using executeUpdate() to make changes in database
+                st.executeUpdate();
+
+                // Close all the connections
+                st.close();
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static Post deletePost(int postId) {
         try {
             // Delete attachment dependency
@@ -227,37 +258,4 @@ public class DBPost {
 
         return null;
     }
-
-    public static void updatePost(int idPost, String editedMessage, String editedTitle) {
-        Post updatedPost = getPost(idPost);
-        if ((!updatedPost.getMessage().equals(editedMessage) || !(updatedPost.getTitle().equals(editedTitle)))) {
-        try {
-
-            LocalDateTime updatedTime = LocalDateTime.now();
-
-            // Initialize the database
-            Connection con = DBConnection.getConnection();
-
-            // SQL query
-            query = "UPDATE post SET message = ?, title = ?, updated_at = ? WHERE id = ?";
-            st = con.prepareStatement(query);
-            st.setString(1, editedMessage);
-            st.setString(1, editedMessage);
-            st.setString(2, editedTitle);
-            st.setString(3, String.valueOf(updatedTime));
-            st.setString(4, String.valueOf(idPost));
-
-            // Execute the insert command using executeUpdate() to make changes in database
-            st.executeUpdate();
-
-            // Close all the connections
-            st.close();
-            con.close();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-  }
 }

@@ -22,65 +22,74 @@ public class PostServlet extends HttpServlet {
         session.setAttribute("error", null);
 
         if (request.getParameter("request") != null) {
-            if (request.getParameter("request").equals("create")) {
-                // Get all params from request
-                String title = request.getParameter("title");
-                String username = request.getParameter("username");
-                String message = request.getParameter("message");
-                Part filePart = request.getPart("file");
+            int postId;
 
-                // Create post
-                Post createdPost = DBPost.createPost(title, username, message);
+            switch (request.getParameter("request")) {
+                case "create":
+                    // Get all params from request
+                    String title = request.getParameter("title");
+                    String username = request.getParameter("username");
+                    String message = request.getParameter("message");
+                    Part filePart = request.getPart("file");
 
-                // Create attachment
-                if (createdPost == null)
-                    session.setAttribute("error", "Could not create post");
-                else {
-                    if (filePart.getSize() > 0) {
-                        // Get file params
-                        String name = filePart.getSubmittedFileName();
-                        int size = (int) filePart.getSize();
-                        String type = filePart.getContentType();
-                        InputStream file = filePart.getInputStream();
-                        int postId = createdPost.getPostId();
+                    // Create post
+                    Post createdPost = DBPost.createPost(title, username, message);
 
-                        // Create attachment
-                        Attachment createdAttachment = DBAttachment.createAttachment(postId, file, size, name, type);
+                    // Create attachment
+                    if (createdPost == null)
+                        session.setAttribute("error", "Could not create post");
+                    else {
+                        if (filePart.getSize() > 0) {
+                            // Get file params
+                            String name = filePart.getSubmittedFileName();
+                            int size = (int) filePart.getSize();
+                            String type = filePart.getContentType();
+                            InputStream file = filePart.getInputStream();
+                            postId = createdPost.getPostId();
 
-                        if (createdAttachment == null)
-                            session.setAttribute("error", "Could not create attachment");
-                        else
-                            createdPost.setAttachment(createdAttachment);
+                            // Create attachment
+                            Attachment createdAttachment = DBAttachment.createAttachment(postId, file, size, name, type);
+
+                            if (createdAttachment == null)
+                                session.setAttribute("error", "Could not create attachment");
+                            else
+                                createdPost.setAttachment(createdAttachment);
+                        }
                     }
-                }
-            } else if (request.getParameter("request").equals("delete")) {
-                int postId = Integer.parseInt(request.getParameter("postId"));
+                    break;
+                case "delete":
+                    postId = Integer.parseInt(request.getParameter("postId"));
 
-                // Verify post was deleted
-                Post deletedPost = DBPost.deletePost(postId);
+                    // Verify post was deleted
+                    Post deletedPost = DBPost.deletePost(postId);
 
-                if (deletedPost == null)
-                    session.setAttribute("error", "Could not delete post");
-            } else if (request.getParameter("request").equals("edit")) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                session.setAttribute("editMessage", id);
-                session.setAttribute("editTitle", id);
-                session.setAttribute("updatedTime", id);
-            } else if (request.getParameter("request").equals("save")) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                String editedMessage = request.getParameter("editMessage");
-                String editedTitle = request.getParameter("editTitle");
+                    if (deletedPost == null)
+                        session.setAttribute("error", "Could not delete post");
+                    break;
+                case "edit":
+                    postId = Integer.parseInt(request.getParameter("postId"));
 
-                if (editedMessage.equals("") || editedTitle.equals("")) {
-                    session.setAttribute("error", "Could not edit post");
+                    session.setAttribute("editMessage", postId);
+                    session.setAttribute("editTitle", postId);
+                    session.setAttribute("updatedTime", postId);
+                    break;
+                case "save":
+                    String editedMessage = request.getParameter("editMessage");
+                    String editedTitle = request.getParameter("editTitle");
 
-                } else {
-                    DBPost.updatePost(id, editedMessage, editedTitle);
-                    session.setAttribute("editTitle", "");
-                    session.setAttribute("editMessage", "");
-                }
+                    if (editedMessage.equals("") || editedTitle.equals("")) {
+                        session.setAttribute("error", "Could not edit post");
+                    } else {
+                        postId = Integer.parseInt(request.getParameter("postId"));
+
+                        DBPost.updatePost(postId, editedMessage, editedTitle);
+                        session.setAttribute("editTitle", "");
+                        session.setAttribute("editMessage", "");
+                    }
+                    break;
             }
         }
+
         response.sendRedirect("/message_board_war/posts");
     }
 
