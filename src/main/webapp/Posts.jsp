@@ -31,9 +31,9 @@
     %>
     <form action="posts" method="post">
         <% if (session.getAttribute("editMessage") != null && session.getAttribute("editMessage") == (Integer) post.getId()) {%>
-        <p><input type="text" name="editTitle" value="<%=post.getTitle()%>"> <%=post.getUsername() %>
+        <p><textarea type="text" name="editTitle"><%=post.getTitle()%></textarea> <%=post.getUsername()%>
         </p>
-        <input type="text" name="editMessage" value="<%=post.getMessage()%>">
+        <textarea type="text" name="editMessage"><%=post.getMessage()%></textarea>
         <input type="submit" name="request" class="btn button-color" value="save">
         <%} else {%>
         <p><%= post.getTitle() + " - " + post.getUsername() %>
