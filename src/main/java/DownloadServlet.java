@@ -21,7 +21,7 @@ public class DownloadServlet extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         int postId = Integer.parseInt(request.getParameter("postId"));
-        Attachment attachment = null; //figure out how to get attachment from DB
+        Attachment attachment = DBAttachment.getAttachment(postId);
 
         String fileName = attachment.getName();
         System.out.println("File Name: " + fileName);
