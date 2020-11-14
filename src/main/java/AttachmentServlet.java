@@ -58,7 +58,8 @@ public class AttachmentServlet extends HttpServlet {
                 System.out.println("Content Type: " + contentType);
                 response.setHeader("Content-Type", contentType);
                 response.setHeader("Content-Disposition", "inline; filename=\"" + attachment.getName() + "\"");
-                response.setHeader("Expires", "Wed, 25 Dec 1996 00:00:01 GMT");
+                //Ensures User doesn't cache the data
+                response.setHeader("Expires", "Wed, 25 Dec 1996 00:00:01 GMT"); //Bad practice to set expires to 0, so I set a date in the past.
                 response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0");
 
                 try {
