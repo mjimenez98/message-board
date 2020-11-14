@@ -10,7 +10,7 @@ public class DBConnection {
 
     // Database credentials
     static final String DB_USER = "root";
-    static final String DB_PASSWORD = "123456789";
+    static final String DB_PASSWORD = "h3ll0sql";
 
     static Connection conn = null;
 

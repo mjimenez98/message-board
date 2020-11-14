@@ -45,6 +45,7 @@ public class DBAttachment {
         return attachment;
     }
 
+
     public static Attachment createAttachment(int postId, InputStream file, int size, String name, String type) {
         Attachment attachment = null;
 

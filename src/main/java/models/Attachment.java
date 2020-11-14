@@ -1,5 +1,6 @@
 package models;
 
+import java.io.File;
 import java.sql.Blob;
 
 public class Attachment {
@@ -49,4 +50,5 @@ public class Attachment {
 
         return String.format("%.2f", size / 1000000.0) + "MB";
     }
+
 }
