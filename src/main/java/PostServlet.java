@@ -1,59 +1,95 @@
+import db.DBAttachment;
 import db.DBPost;
+import models.Attachment;
 import models.Post;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 
 @WebServlet(name = "PostServlet")
+@MultipartConfig(maxFileSize = 16177215) // 16 MB
 public class PostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get params
         HttpSession session = request.getSession();
         session.setAttribute("error", null);
 
         if (request.getParameter("request") != null) {
-            if (request.getParameter("request").equals("create")) {
-                // Get all params from request
-                String title = request.getParameter("title");
-                String username = request.getParameter("username");
-                String message = request.getParameter("message");
+            int postId;
 
-                Post createdPost = DBPost.createPost(title, username, message);
-                if (createdPost == null)
-                    session.setAttribute("error", "Could not create post");
-            } else if (request.getParameter("request").equals("delete")) {
-                int id = Integer.parseInt(request.getParameter("id"));
+            switch (request.getParameter("request")) {
+                case "create":
+                    // Get all params from request
+                    String title = request.getParameter("title");
+                    String username = request.getParameter("username");
+                    String message = request.getParameter("message");
+                    Part filePart = request.getPart("file");
 
-                Post deletedPost = DBPost.deletePost(id);
-                if (deletedPost == null)
-                    session.setAttribute("error", "Could not delete post");
-            } else if (request.getParameter("request").equals("edit")) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                session.setAttribute("editMessage", id);
-                session.setAttribute("editTitle", id);
-                session.setAttribute("updatedTime", id);
-            } else if (request.getParameter("request").equals("save")) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                String editedMessage = request.getParameter("editMessage");
-                String editedTitle = request.getParameter("editTitle");
+                    // Create post
+                    Post createdPost = DBPost.createPost(title, username, message);
 
-                if (editedMessage.equals("") || editedTitle.equals("")) {
-                    session.setAttribute("error", "Could not edit post");
+                    // Create attachment
+                    if (createdPost == null)
+                        session.setAttribute("error", "Could not create post");
+                    else {
+                        if (filePart.getSize() > 0) {
+                            // Get file params
+                            String name = filePart.getSubmittedFileName();
+                            int size = (int) filePart.getSize();
+                            String type = filePart.getContentType();
+                            InputStream file = filePart.getInputStream();
+                            postId = createdPost.getPostId();
 
-                } else {
-                    DBPost.updatePost(id, editedMessage, editedTitle);
-                    session.setAttribute("editTitle", "");
-                    session.setAttribute("editMessage", "");
-                }
+                            // Create attachment
+                            Attachment createdAttachment = DBAttachment.createAttachment(postId, file, size, name, type);
+
+                            if (createdAttachment == null)
+                                session.setAttribute("error", "Could not create attachment");
+                            else
+                                createdPost.setAttachment(createdAttachment);
+                        }
+                    }
+                    break;
+                case "delete":
+                    postId = Integer.parseInt(request.getParameter("postId"));
+
+                    // Verify post was deleted
+                    Post deletedPost = DBPost.deletePost(postId);
+
+                    if (deletedPost == null)
+                        session.setAttribute("error", "Could not delete post");
+                    break;
+                case "edit":
+                    postId = Integer.parseInt(request.getParameter("postId"));
+
+                    session.setAttribute("editMessage", postId);
+                    session.setAttribute("editTitle", postId);
+                    session.setAttribute("updatedTime", postId);
+                    break;
+                case "save":
+                    String editedMessage = request.getParameter("editMessage");
+                    String editedTitle = request.getParameter("editTitle");
+
+                    if (editedMessage.equals("") || editedTitle.equals("")) {
+                        session.setAttribute("error", "Could not edit post");
+                    } else {
+                        postId = Integer.parseInt(request.getParameter("postId"));
+
+                        DBPost.updatePost(postId, editedMessage, editedTitle);
+                        session.setAttribute("editTitle", "");
+                        session.setAttribute("editMessage", "");
+                    }
+                    break;
             }
         }
+
         response.sendRedirect("/message_board_war/posts");
     }
 
