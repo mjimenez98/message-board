@@ -78,6 +78,7 @@
                                             <label for="file">Update file:</label>
                                             <input type="file" name="file" size="50"/>
 
+                                            <button type="submit" name="request" value="download">Download</button>
                                             <button type="submit" name="request" value="update">Update Attachment</button>
                                             <button type="submit" name="request" value="delete">Delete Attachment</button>
                                         </form>
@@ -108,7 +109,7 @@
                         <label for="file">Attach a file:</label>
                         <input type="file" id="file" name="file" size="50"/>
                     </fieldset>
-                    <button type="submit" name="request" value="create">Create</button>
+                    <button type="submit" name="request" value="create">Post Message</button>
                 </form>
                 <form action="<%= response.encodeURL("LogoutServlet") %>" method="post">
                     <input type="submit" value="Logout">
