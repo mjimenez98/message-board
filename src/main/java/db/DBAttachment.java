@@ -23,7 +23,7 @@ public class DBAttachment {
 
             ResultSet rs = st.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
                 attachment = new Attachment(
                         rs.getInt("attachment_id"),
                         rs.getInt("post_id"),
@@ -38,7 +38,7 @@ public class DBAttachment {
             st.close();
             con.close();
         }
-        catch(Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -73,7 +73,7 @@ public class DBAttachment {
 
             attachment = getAttachment(postId);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -129,7 +129,7 @@ public class DBAttachment {
 
             return deletedAttachment;
         }
-        catch(Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
 
