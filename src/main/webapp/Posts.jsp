@@ -41,7 +41,7 @@
 
             <%-- Alerts --%>
             <div class="row justify-content-center">
-                <div class="col-md-10 mt-2">
+                <div class="col-md-12 mt-2">
                     <%
                         if (session.getAttribute("error") != null) {
                     %>
@@ -53,6 +53,46 @@
                     %>
                 </div>
             </div>
+
+            <%-- Logout --%>
+            <div class="row justify-content-end">
+                <div class="col-3">
+                    <form action="<%= response.encodeURL("LogoutServlet") %>" method="post" class="mt-2">
+                        <button type="submit" name="request" value="Logout" class="btn btn-dark">
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <%-- Search --%>
+            <div class="row mb-3">
+                <div class="container">
+                    <div class="row">
+                        <%-- Search form --%>
+                        <div class="col-12">
+                            <h1 class="mb-1">Search</h1>
+                            <form action="posts" method="get" class="form-inline">
+                                <label for="user" class="mr-1">User</label>
+                                <input type="text" id="user" name="user" class="mr-2">
+
+                                <label for="fromDate" class="mr-1">From</label>
+                                <input type="datetime-local" id="fromDate" name="fromDate" class="mr-2">
+
+                                <label for="toDate" class="mr-1">To</label>
+                                <input type="datetime-local" id="toDate" name="toDate" class="mr-2">
+
+                                <label for="hashtags" class="mr-1">Hashtags</label>
+                                <input type="text" id="hashtags" name="hashtags" class="mr-2">
+
+                                <button type="submit" name="request" value="search" class="btn btn-dark mt-2">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr/>
 
             <%-- Posts --%>
             <div>
@@ -192,17 +232,8 @@
                 <div class="container">
                     <div class="row">
                         <%-- Title --%>
-                        <div class="col-10">
+                        <div class="col-12">
                             <h1>Create a Post</h1>
-                        </div>
-
-                        <%-- Logout --%>
-                        <div class="col-2 text-right">
-                            <form action="<%= response.encodeURL("LogoutServlet") %>" method="post" class="mt-2">
-                                <button type="submit" name="request" value="Logout" class="btn btn-dark">
-                                    Logout
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
