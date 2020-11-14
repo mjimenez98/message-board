@@ -54,11 +54,12 @@ public class AttachmentServlet extends HttpServlet {
                 String fileName = attachment.getName();
                 System.out.println("File Name: " + fileName);
 
-                //Gets File Type
                 String contentType = "application/octet-stream";
                 System.out.println("Content Type: " + contentType);
                 response.setHeader("Content-Type", contentType);
                 response.setHeader("Content-Disposition", "inline; filename=\"" + attachment.getName() + "\"");
+                response.setHeader("Expires", "Wed, 25 Dec 1996 00:00:01 GMT");
+                response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0");
 
                 try {
                     response.setHeader("Content-Length", String.valueOf(attachment.getFile().length()));
