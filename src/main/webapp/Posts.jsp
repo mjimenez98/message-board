@@ -113,6 +113,24 @@
                 <form action="<%= response.encodeURL("LogoutServlet") %>" method="post">
                     <input type="submit" value="Logout">
                 </form>
+                <form action="posts" method="get">
+                    <h1> Search for Posts </h1>
+                    <fieldset>
+                        <label for="user">User</label>
+                        <input type="text" id="user" name="user">
+
+                        <label for="fromDate">From</label>
+                        <input type="datetime-local" id="fromDate" name="fromDate">
+
+                        <label for="toDate">To</label>
+                        <input type="datetime-local" id="toDate" name="toDate">
+
+                        <label for="hashtags">Hashtags</label>
+                        <input type="text" id="hashtags" name="hashtags">
+
+                        <button type="submit" name="request" value="search">Search</button>
+                    </fieldset>
+                </form>
             </div>
         </div>
     </body>
