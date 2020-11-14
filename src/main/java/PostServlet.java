@@ -12,6 +12,8 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @WebServlet(name = "PostServlet")
 @MultipartConfig(maxFileSize = 16177215) // 16 MB
@@ -99,6 +101,26 @@ public class PostServlet extends HttpServlet {
         int limit = Integer.parseInt(config.getInitParameter("limit"));
 
         LinkedList<Post> posts = DBPost.getPosts(limit);
+
+        if (request.getParameter("request") != null) {
+            if (request.getParameter("request").equals("search")) {
+                String username = request.getParameter("user");
+                String fromDate = request.getParameter("fromDate");
+                String toDate = request.getParameter("toDate");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:'00'");
+                fromDate = ((fromDate != "") ? LocalDateTime.parse(fromDate).format(formatter) : null);
+                toDate = ((toDate != "") ? LocalDateTime.parse(toDate).format(formatter) : null);
+                String[] hashtags = request.getParameter("hashtags").split(",");
+                if (hashtags[0] != "") {
+                    for (int i = 0; i < hashtags.length; i++) {
+                        hashtags[i] = hashtags[i].replaceAll("\\s+", "");
+                        hashtags[i] = "%#" + hashtags[i] + "%";
+                    }
+                }
+                posts = DBPost.getPosts(username, fromDate, toDate, hashtags);
+            }
+        }
+
         request.setAttribute("posts", posts);
 
         RequestDispatcher rd = request.getRequestDispatcher("Posts.jsp");

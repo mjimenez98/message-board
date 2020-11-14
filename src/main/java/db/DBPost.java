@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class DBPost {
     private static String query = null;
@@ -165,6 +168,95 @@ public class DBPost {
         }
 
         return post;
+    }
+
+    public static LinkedList<Post> getPosts(String user, String fromDate, String toDate, String[] hashtags) {
+        LinkedList<Post> posts = new LinkedList<>();
+
+        try {
+            // Initialize the database
+            Connection con = DBConnection.getConnection();
+            Map<Integer, String> statementParams = new HashMap<>();
+            // SQL query
+            query = "SELECT * FROM posts";
+
+            boolean firstCondition = true;
+            int currentParamIndex = 1;
+            if (user != null && user != "") {
+                firstCondition = false;
+                query += " WHERE ";
+                query += " username = ?";
+                statementParams.put(currentParamIndex, user);
+                currentParamIndex++;
+            }
+            if (fromDate != null) {
+                query += firstCondition ? " WHERE " : " AND ";
+                if (firstCondition) {
+                    firstCondition = false;
+                }
+                query += " created_at >= ? ";
+                statementParams.put(currentParamIndex, fromDate);
+                currentParamIndex++;
+            }
+            if (toDate != null) {
+                query += firstCondition ? " WHERE " : " AND ";
+                if (firstCondition) {
+                    firstCondition = false;
+                }
+                query += " created_at <= ? ";
+                statementParams.put(currentParamIndex, toDate);
+                currentParamIndex++;
+            }
+            if (hashtags[0] != "") {
+                query += firstCondition ? " WHERE " : " AND ";
+                query += "(message LIKE ?";
+                statementParams.put(currentParamIndex, hashtags[0]);
+                currentParamIndex++;
+                for (int i = 1; i < hashtags.length; i++) {
+                    query += " OR message LIKE ? ";
+                    statementParams.put(currentParamIndex, hashtags[i]);
+                    currentParamIndex++;
+                }
+                query += ")";
+            }
+            query += " ORDER BY created_at DESC";
+
+            st = con.prepareStatement(query);
+
+            Iterator it = statementParams.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry) it.next();
+                st.setString((int) pair.getKey(), (String) pair.getValue());
+                it.remove(); // avoids a ConcurrentModificationException
+            }
+
+            ResultSet rs = st.executeQuery();
+
+            // Go through every result in set, create Post object and add it to linked list
+            while (rs.next()) {
+                assert false;
+                Post post = new Post(
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("username"),
+                        LocalDateTime.parse(rs.getString("created_at"), formatter),
+                        LocalDateTime.parse(rs.getString("updated_at"), formatter),
+                        rs.getString("message"));
+
+                // Set attachment
+                post.setAttachment(DBAttachment.getAttachment(post.getPostId()));
+                posts.add(post);
+            }
+
+            // Close all connections
+            rs.close();
+            st.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return posts;
     }
 
     public static Post updatePost(int postId) {
