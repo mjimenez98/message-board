@@ -30,36 +30,139 @@
             </div>
 
             <%-- Alerts --%>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-10 mt-2">
-                        <%
-                            // Allow access only if session exists
-                            if (session.getAttribute("user") == null) {
-                                response.sendRedirect("Login.jsp");
-                            }
-                            String user = (String) session.getAttribute("user");
+            <div class="row justify-content-center">
+                <div class="col-md-10 mt-2">
+                    <%
+                        // Allow access only if session exists
+                        if (session.getAttribute("user") == null) {
+                            response.sendRedirect("Login.jsp");
+                        }
+                        String user = (String) session.getAttribute("user");
 
-                            if (session.getAttribute("error") != null) {
-                        %>
-                            <div class="alert alert-danger text-center" role="alert">
-                                <%= session.getAttribute("error") %>
-                            </div>
-                        <%
-                            }
-                        %>
-                    </div>
+                        if (session.getAttribute("error") != null) {
+                    %>
+                        <div class="alert alert-danger text-center" role="alert">
+                            <%= session.getAttribute("error") %>
+                        </div>
+                    <%
+                        }
+                    %>
                 </div>
             </div>
 
-            <%-- Create a post --%>
+            <%-- Posts --%>
             <div>
+                <%-- Title --%>
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Posts</h1>
+                    </div>
+                </div>
+
+                <%-- Post --%>
+                <%
+                    LinkedList<Post> posts = (LinkedList<Post>) request.getAttribute("posts");
+                    if (request.getAttribute("posts") != null) {
+                        for (Post post : posts) {
+                            Attachment attachment = post.getAttachment();
+                            boolean belongsToUser = (user != null && user.equals(post.getUsername()));
+                %>
+                            <div class="row">
+                                <div class="col-12">
+                                    <form action="posts" method="post">
+                                        <% if (session.getAttribute("editMessage") != null &&
+                                                session.getAttribute("editMessage") == (Integer) post.getPostId()) {
+                                        %>
+                                            <div class="form-group">
+                                                <label for="editTitle"></label>
+                                                <textarea id="editTitle" name="editTitle" class="form-control"  rows="5" cols="1">
+                                                    <%= post.getTitle() %>
+                                                </textarea>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="editMessage"></label>
+                                                <textarea id="editMessage" name="editMessage" class="form-control" rows="5" cols="1">
+                                                    <%= post.getMessage() %>
+                                                </textarea>
+                                            </div>
+
+                                            <button type="submit" name="request" value="save">Save Post</button>
+                                        <% }
+                                            else {
+                                        %>
+                                                <p><%= post.getTitle() + " - " + post.getUsername() %></p>
+                                                <p><%= post.getMessage() %></p>
+                                                <%
+                                                    if (post.getCreatedAt().isBefore(post.getUpdatedAt())) {
+                                                %>
+                                                    <p class="font-italic">Edited <%= post.getUpdatedAt() %></p>
+                                        <%
+                                                    }
+                                            }
+                                        %>
+                                        <%
+                                            if (belongsToUser) {
+                                        %>
+                                                <input type="hidden" name="postId" value="<%= post.getPostId() %>">
+                                                <button type="submit" name="request" value="edit">Edit Post</button>
+                                                <button type="submit" name="request" value="delete">Delete Post</button>
+                                        <% } %>
+                                    </form>
+
+
+                                    <%
+                                        if (attachment != null) {
+                                    %>
+                                        <div class="media">
+                                            <img src="${pageContext.request.contextPath}/images/attachment.png" class="mr-3"
+                                                 alt="attachment" width="16" height="16">
+                                            <div class="media-body">
+                                                <h5 class="mt-0"><%= attachment.getName() %></h5>
+                                                <p>
+                                                    <%= attachment.getContentType() + " - " +  attachment.printSize()%>
+
+                                                    <%
+                                                        if (post.isUpdated()) {
+                                                    %>
+                                                        <small class="text-muted">
+                                                            <%= " - Last updated on " + post.getUpdatedAt() %>
+                                                        </small>
+                                                    <% } %>
+                                                </p>
+                                                <% if (belongsToUser) { %>
+                                                    <form action="posts/attachments" method="post" enctype="multipart/form-data">
+                                                        <input type="hidden" name="postId" value="<%= post.getPostId() %>">
+
+<%--                                                        <label for="file">Update file:</label>--%>
+                                                        <p>Update file:</p>
+                                                        <input type="file" name="file" size="50"/>
+
+                                                        <button type="submit" name="request" value="update">Update Attachment</button>
+                                                        <button type="submit" name="request" value="delete">Delete Attachment</button>
+                                                    </form>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                <%
+                        }
+                    }
+                %>
+            </div>
+
+            <hr/>
+
+            <%-- Create a post --%>
+            <div class="mb-3">
                 <%-- Header --%>
                 <div class="container">
                     <div class="row">
                         <%-- Title --%>
                         <div class="col-10">
-                            <h1> Create a Post </h1>
+                            <h1>Create a Post</h1>
                         </div>
 
                         <%-- Logout --%>
