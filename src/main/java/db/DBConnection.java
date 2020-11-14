@@ -10,7 +10,7 @@ public class DBConnection {
 
     // Database credentials
     static final String DB_USER = "root";
-    static final String DB_PASSWORD = "123";
+    static final String DB_PASSWORD = "123456789";
 
     static Connection conn = null;
 
@@ -21,16 +21,16 @@ public class DBConnection {
 
             //Open a connection
             System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL + DB_NAME+"?serverTimezone=UTC", DB_USER, DB_PASSWORD);
+            conn = DriverManager.getConnection(DB_URL + DB_NAME + "?serverTimezone=UTC", DB_USER, DB_PASSWORD);
             return conn;
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException("Error connecting to database", e);
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException("Error class not found", e);
         }
     }
 
-    public static void closeConnection() throws SQLException{
+    public static void closeConnection() throws SQLException {
         // Close connection
         if (conn != null)
             conn.close();
