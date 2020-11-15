@@ -51,6 +51,10 @@ public class AttachmentServlet extends HttpServlet {
             else if (request.getParameter("request").equals("download")){
                 Attachment downloadAttachment = DBAttachment.getAttachment(postId);
 
+                if (downloadAttachment == null) {
+                    session.setAttribute("error", "No Attachmment Found");
+                }
+
                 String fileName = downloadAttachment.getName();
                 System.out.println("File Name: " + fileName);
 
