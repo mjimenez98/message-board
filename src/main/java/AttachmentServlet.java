@@ -9,6 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 
 @WebServlet(name = "AttachmentServlet")
 @MultipartConfig(maxFileSize = 16177215) // 16 MB
@@ -45,6 +48,49 @@ public class AttachmentServlet extends HttpServlet {
                 if (deletedAttachment == null)
                     session.setAttribute("error", "Could not delete attachment");
             }
+        }
+        if (request.getParameter("request").equals("download")){
+            Attachment downloadAttachment = DBAttachment.getAttachment(postId);
+
+            if (downloadAttachment == null) {
+                session.setAttribute("error", "No Attachmment Found");
+            }
+
+            String fileName = downloadAttachment.getName();
+            System.out.println("File Name: " + fileName);
+
+            String contentType = "application/octet-stream";
+            System.out.println("Content Type: " + contentType);
+            response.setHeader("Content-Type", contentType);
+            response.setHeader("Content-Disposition", "inline; filename=\"" + downloadAttachment.getName() + "\"");
+            //Ensures User doesn't cache the data
+            response.setHeader("Expires", "Wed, 25 Dec 1996 00:00:01 GMT"); //Bad practice to set expires to 0, so I set a date in the past.
+            response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0");
+
+            try {
+                response.setHeader("Content-Length", String.valueOf(downloadAttachment.getFile().length()));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            Blob fileData = downloadAttachment.getFile();
+            InputStream is = null;
+            OutputStream outputStream = response.getOutputStream();
+            try {
+                is = fileData.getBinaryStream();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            byte[] bytes = new byte[1024];
+            int bytesRead;
+
+            while ((bytesRead = is.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, bytesRead);
+            }
+            is.close();
+            outputStream.flush();
+            outputStream.close();
         }
 
         response.sendRedirect("/message_board_war/posts");
