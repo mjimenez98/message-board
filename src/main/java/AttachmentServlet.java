@@ -49,26 +49,26 @@ public class AttachmentServlet extends HttpServlet {
                     session.setAttribute("error", "Could not delete attachment");
             }
             else if (request.getParameter("request").equals("download")){
-                Attachment attachment = DBAttachment.getAttachment(postId);
+                Attachment downloadAttachment = DBAttachment.getAttachment(postId);
 
-                String fileName = attachment.getName();
+                String fileName = downloadAttachment.getName();
                 System.out.println("File Name: " + fileName);
 
                 String contentType = "application/octet-stream";
                 System.out.println("Content Type: " + contentType);
                 response.setHeader("Content-Type", contentType);
-                response.setHeader("Content-Disposition", "inline; filename=\"" + attachment.getName() + "\"");
+                response.setHeader("Content-Disposition", "inline; filename=\"" + downloadAttachment.getName() + "\"");
                 //Ensures User doesn't cache the data
                 response.setHeader("Expires", "Wed, 25 Dec 1996 00:00:01 GMT"); //Bad practice to set expires to 0, so I set a date in the past.
                 response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0");
 
                 try {
-                    response.setHeader("Content-Length", String.valueOf(attachment.getFile().length()));
+                    response.setHeader("Content-Length", String.valueOf(downloadAttachment.getFile().length()));
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
 
-                Blob fileData = attachment.getFile();
+                Blob fileData = downloadAttachment.getFile();
                 InputStream is = null;
                 OutputStream outputStream = response.getOutputStream();
                 try {
