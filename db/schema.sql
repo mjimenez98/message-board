@@ -19,5 +19,5 @@ CREATE TABLE attachments (
     name VARCHAR(255) NOT NULL,
     size INTEGER NOT NULL,
     type VARCHAR(255) NOT NULL,
-    FOREIGN KEY (post_id) REFERENCES Posts(post_id)
+    CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES Posts(post_id)
 );
