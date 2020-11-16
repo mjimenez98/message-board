@@ -174,6 +174,7 @@
                                                                                         class="btn btn-dark btn-sm">
                                                                                     Download
                                                                                 </button>
+                                                                            </div>
                                                                             <div class="mt-1">
                                                                                 <button type="submit" name="request" value="update"
                                                                                         class="btn btn-dark btn-sm">
@@ -184,7 +185,6 @@
                                                                                     Delete Attachment
                                                                                 </button>
                                                                             </div>
-
                                                                         </form>
                                                                     <% } %>
                                                                 </div>
