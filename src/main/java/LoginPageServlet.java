@@ -19,13 +19,21 @@ import java.nio.charset.StandardCharsets;
 
 @WebServlet("/LoginPageServlet")
 public class LoginPageServlet extends HttpServlet {
+    UserManagerImpl userManagerImpl;
+
+    @Override
+    public void init() throws ServletException {
+        UserManagerEnum userManager = UserManagerEnum.INSTANCE;
+        userManager.setUserManagerImplementation(getServletContext().getInitParameter("userManagerImpl"), getServletContext().getRealPath("/WEB-INF/users.xml"));
+        userManagerImpl = userManager.getUserManagerImplementation();
+    }
 
     private static final int MAX_INACTIVE = 30 * 60;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        if (isAuthenticated(username, password)) {
+        if (userManagerImpl.isAuthenticated(username, password)) {
             HttpSession session = request.getSession();
             session.setAttribute("user", username);
             //setting session to expiry in 30 mins
@@ -38,38 +46,6 @@ public class LoginPageServlet extends HttpServlet {
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/Login.jsp");
             rd.include(request, response);
         }
-    }
-
-    private boolean isAuthenticated(String username, String password) {
-        //Build DOM
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
-        try {
-            FileInputStream fileIS = new FileInputStream(getServletContext().getRealPath("/WEB-INF/users.xml"));
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document xmlDocument = builder.parse(fileIS);
-            //Create Xpath
-            XPathFactory xpathfactory = XPathFactory.newInstance();
-            XPath xpath = xpathfactory.newXPath();
-            XPathExpression expr = xpath.compile("//user[user_id = '" + username + "' and password = '" + getHashedPassword(password) + "']");
-            Object result = expr.evaluate(xmlDocument, XPathConstants.NODESET);
-            NodeList nodes = (NodeList) result;
-            return nodes.getLength() == 1;
-        } catch (ParserConfigurationException | XPathExpressionException | FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    private String getHashedPassword(String originalString) {
-        String sha256hex = Hashing.sha256()
-                .hashString(originalString, StandardCharsets.UTF_8)
-                .toString();
-        return sha256hex;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

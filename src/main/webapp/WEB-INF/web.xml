@@ -15,6 +15,10 @@
             <param-name>limit</param-name>
             <param-value>10</param-value>
         </init-param>
+        <init-param>
+            <param-name>userManagerImplClass</param-name>
+            <param-value>UserManagerImpl</param-value>
+        </init-param>
     </servlet>
     <servlet>
         <servlet-name>AttachmentServlet</servlet-name>
