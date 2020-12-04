@@ -23,7 +23,7 @@
 %>
 <div class="row">
     <div class="col-md-12">
-        <form action="LoginPageServlet" method="post">
+        <form action="login" method="post">
             <h1> Login </h1>
             <fieldset>
                 <legend><span class="number">👨🏻‍🎓</span> Your Info</legend>

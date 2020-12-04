@@ -16,7 +16,7 @@ import java.util.List;
 public class UserManagerImpl implements UserManager {
     String file1; //TO DO: rename
 
-    public UserManagerImpl(String file1, String file2){
+    public UserManagerImpl(String file1){
         this.file1 = file1;
     }
 

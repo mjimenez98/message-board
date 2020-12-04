@@ -8,6 +8,15 @@
         <welcome-file>Login.jsp</welcome-file>
     </welcome-file-list>
     <servlet>
+        <servlet-name>LoginPageServlet</servlet-name>
+        <servlet-class>LoginPageServlet</servlet-class>
+
+        <init-param>
+            <param-name>userManagerImplClass</param-name>
+            <param-value>UserManagerImpl</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
         <servlet-name>PostServlet</servlet-name>
         <servlet-class>PostServlet</servlet-class>
 
@@ -15,16 +24,16 @@
             <param-name>limit</param-name>
             <param-value>10</param-value>
         </init-param>
-        <init-param>
-            <param-name>userManagerImplClass</param-name>
-            <param-value>UserManagerImpl</param-value>
-        </init-param>
     </servlet>
     <servlet>
         <servlet-name>AttachmentServlet</servlet-name>
         <servlet-class>AttachmentServlet</servlet-class>
     </servlet>
 
+    <servlet-mapping>
+        <servlet-name>LoginPageServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostServlet</servlet-name>
         <url-pattern>/posts</url-pattern>

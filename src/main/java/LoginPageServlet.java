@@ -17,14 +17,14 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 //Source: https://www.journaldev.com/1907/java-session-management-servlet-httpsession-url-rewriting#servlet-url-rewriting
 
-@WebServlet("/LoginPageServlet")
+@WebServlet(name = "LoginPageServlet")
 public class LoginPageServlet extends HttpServlet {
     UserManagerImpl userManagerImpl;
 
     @Override
     public void init() throws ServletException {
         UserManagerEnum userManager = UserManagerEnum.INSTANCE;
-        userManager.setUserManagerImplementation(getServletContext().getInitParameter("userManagerImpl"), getServletContext().getRealPath("/WEB-INF/users.xml"));
+        userManager.setUserManagerImplementation(getServletConfig().getInitParameter("userManagerImplClass"), getServletContext().getRealPath("/WEB-INF/users.xml"));
         userManagerImpl = userManager.getUserManagerImplementation();
     }
 
