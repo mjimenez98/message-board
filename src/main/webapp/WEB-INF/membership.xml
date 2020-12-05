@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<memberships>
+    <user-membership>
+        <user_id>saima</user_id>
+        <group_name>admin</group_name>
+    </user-membership>
+    <user-membership>
+        <user_id>miguel</user_id>
+        <group_name>soen</group_name>
+    </user-membership>
+    <user-membership>
+        <user_id>nicolas</user_id>
+        <group_name>encs</group_name>
+        <group_name>soen</group_name>
+    </user-membership>s
+    <user-membership>
+        <user_id>dina</user_id>
+        <group_name>comp</group_name>
+    </user-membership>
+</memberships>
