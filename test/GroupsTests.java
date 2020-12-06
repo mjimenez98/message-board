@@ -8,12 +8,11 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-public class GroupsTest {
+public class GroupsTests {
     @Test
     public void firstTest() {
         Assert.assertTrue(true);
     }
-
 
     @Test
     public void groupsExistence() {
@@ -33,6 +32,4 @@ public class GroupsTest {
             System.out.println(e.getMessage());
         }
     }
-
-
 }
