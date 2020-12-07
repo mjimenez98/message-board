@@ -39,4 +39,27 @@ public class GroupsTests {
             System.out.println(e.getMessage());
         }
     }
+
+    @Test
+    public void UndefinedGroup() {
+        try {
+            String undefinedGroup = "engr";
+            String groupNameXML ="";
+
+            DocumentBuilderFactory dbf =
+                    DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document d = db.parse("src\\main\\webapp\\WEB-INF\\groups.xml");
+            XPath xp = XPathFactory.newInstance().newXPath();
+            NodeList nl = (NodeList) xp.compile("//group").evaluate(d, XPathConstants.NODESET);
+
+            for (int i= 0; i<nl.getLength(); i++ ) {
+                groupNameXML= groupNameXML + xp.compile(".//group_name").evaluate(nl.item(i)) + "\n";
+            }
+            Assert.assertFalse("This group does not exist.",groupNameXML.contains(undefinedGroup));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 }
