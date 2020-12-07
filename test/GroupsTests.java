@@ -17,12 +17,12 @@ public class GroupsTests {
     @Test
     public void groupsExistence() {
         try {
-            String groupNameActual = "admins\n" +
+            String groupNameExpected = "admins\n" +
                                 "concordia\n" +
                                 "encs\n" +
                                 "comp\n" +
                                 "soen\n";
-            String groupNameExpected ="";
+            String groupNameXML ="";
 
             DocumentBuilderFactory dbf =
                     DocumentBuilderFactory.newInstance();
@@ -32,10 +32,9 @@ public class GroupsTests {
             NodeList nl = (NodeList) xp.compile("//group").evaluate(d, XPathConstants.NODESET);
 
             for (int i= 0; i<nl.getLength(); i++ ) {
-                groupNameExpected= groupNameExpected + xp.compile(".//group_name").evaluate(nl.item(i)) + "\n";
+                groupNameXML= groupNameXML + xp.compile(".//group_name").evaluate(nl.item(i)) + "\n";
             }
-                Assert.assertEquals(groupNameExpected,groupNameActual);
-
+                Assert.assertEquals(groupNameExpected,groupNameXML);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
