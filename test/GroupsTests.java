@@ -11,7 +11,7 @@ import javax.xml.xpath.XPathFactory;
 public class GroupsTests {
 
     @Test
-    public void groupsExistence() {
+    public void GroupsExistence() {
         try {
             String groupNameExpected = "admins\n" +
                                 "concordia\n" +
