@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<groups>
+    <group>
+        <group_name>admins</group_name>
+    </group>
+    <group>
+        <group_name>concordia</group_name>
+    </group>
+    <group>
+        <group_name>encs</group_name>
+        <parent>concordia</parent>
+    </group>
+    <group>
+        <group_name>comp</group_name>
+        <parent>encs</parent>
+    </group>
+    <group>
+        <group_name>soen</group_name>
+        <parent>encs</parent>
+    </group>
+</groups>
