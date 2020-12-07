@@ -9,10 +9,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 public class GroupsTests {
-    @Test
-    public void firstTest() {
-        Assert.assertTrue(true);
-    }
 
     @Test
     public void groupsExistence() {
