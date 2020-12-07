@@ -29,6 +29,7 @@
             }
 
             String user = (String) session.getAttribute("user");
+            LinkedList<String> memberships = (LinkedList<String>) session.getAttribute("memberships");
         %>
 
         <div class="container mw-100">
@@ -113,7 +114,7 @@
                     if (request.getAttribute("posts") != null) {
                         for (Post post : posts) {
                             Attachment attachment = post.getAttachment();
-                            boolean belongsToUser = (user != null && user.equals(post.getUsername()));
+                            boolean editable = (user != null && user.equals(post.getUsername()) || memberships.contains("admin"));
                 %>
                             <div class="row mt-1 mb-3">
                                 <div class="container">
@@ -160,7 +161,7 @@
 
                                                                     <p><%= attachment.getContentType() + " - " +  attachment.printSize()%></p>
 
-                                                                    <% if (belongsToUser) { %>
+                                                                    <% if (editable) { %>
                                                                         <form action="posts/attachments" method="post"
                                                                               enctype="multipart/form-data" class="mb-3">
                                                                             <input type="hidden" name="postId" value="<%= post.getPostId() %>">
@@ -202,7 +203,7 @@
 
                                             <%-- Edit and delete buttons --%>
                                             <%
-                                                if (belongsToUser) {
+                                                if (editable) {
                                             %>
                                                     <form action="posts" method="post">
                                                         <input type="hidden" name="postId" value="<%= post.getPostId() %>">

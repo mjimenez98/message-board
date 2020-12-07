@@ -1,20 +1,10 @@
-import com.google.common.hash.Hashing;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+
 //Source: https://www.journaldev.com/1907/java-session-management-servlet-httpsession-url-rewriting#servlet-url-rewriting
 
 @WebServlet(name = "LoginPageServlet")
@@ -33,11 +23,18 @@ public class LoginPageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+
         if (userManagerImpl.isAuthenticated(username, password)) {
             HttpSession session = request.getSession();
             session.setAttribute("user", username);
-            //setting session to expiry in 30 mins
+
+            // Setting session to expiry in 30 mins
             session.setMaxInactiveInterval(MAX_INACTIVE);
+
+            // Store group membership in user session
+            LinkedList<String> memberships = userManagerImpl.getGroupMemberships(username);
+            session.setAttribute("memberships", memberships);
+
             //Get the encoded URL string
             String encodedURL = response.encodeRedirectURL("/message_board_war/posts");
             response.sendRedirect(encodedURL);

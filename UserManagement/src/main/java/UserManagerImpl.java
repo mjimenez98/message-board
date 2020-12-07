@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 import java.util.List;
 
 public class UserManagerImpl implements UserManager {
@@ -21,7 +22,7 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public List<String> getGroupMemberships(String user) {
+    public LinkedList<String> getGroupMemberships(String user) {
         //TO DO: Add implementation
         return null;
     }
