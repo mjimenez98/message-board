@@ -1,6 +1,7 @@
 package db;
 
 import java.sql.*;
+import properties.Props;
 
 public class DBConnection {
     // JDBC driver name and database URL
@@ -10,12 +11,14 @@ public class DBConnection {
 
     // Database credentials
     static final String DB_USER = "root";
-    static final String DB_PASSWORD = "123456789";
 
     static Connection conn = null;
 
     public static Connection getConnection() {
         try {
+            // Load password
+            String DB_PASSWORD = Props.GetValue("DBPassword");
+
             //Register JDBC driver
             Class.forName(JDBC_DRIVER);
 

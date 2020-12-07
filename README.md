@@ -37,6 +37,13 @@ Click on `Fix` and select `message-board:war`
 
 4. Run the new Tomcat configuration and navigate away!
 
+### properties.Props
+
+1. Go to `~/src/main/webapp/WEB-INF/classes/example-MessageBoard_en_US.properties`
+2. Copy the contents of this file, create another file in the same directory called `MessageBoard_en_US.properties`, 
+and paste the keys you coped in this new file
+3. Fill the values for the keys
+
 ### Database
 
 This project uses MySQL as its database management system.

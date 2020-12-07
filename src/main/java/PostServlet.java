@@ -2,6 +2,7 @@ import db.DBAttachment;
 import db.DBPost;
 import models.Attachment;
 import models.Post;
+import properties.Props;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -123,6 +124,12 @@ public class PostServlet extends HttpServlet {
         }
 
         request.setAttribute("posts", posts);
+
+        // Save who is the admin group from properties
+        HttpSession session = request.getSession();
+        if (session.getAttribute("adminGroup") == null) {
+            session.setAttribute("adminGroup", Props.GetValue("AdminGroup"));
+        }
 
         RequestDispatcher rd = request.getRequestDispatcher("Posts.jsp");
         rd.forward(request, response);
