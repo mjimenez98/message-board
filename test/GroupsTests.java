@@ -17,17 +17,25 @@ public class GroupsTests {
     @Test
     public void groupsExistence() {
         try {
+            String groupNameActual = "admins\n" +
+                                "concordia\n" +
+                                "encs\n" +
+                                "comp\n" +
+                                "soen\n";
+            String groupNameExpected ="";
+
             DocumentBuilderFactory dbf =
                     DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document d = db.parse("src\\main\\webapp\\WEB-INF\\groups.xml");
             XPath xp = XPathFactory.newInstance().newXPath();
             NodeList nl = (NodeList) xp.compile("//group").evaluate(d, XPathConstants.NODESET);
-            System.out.println("Number of existing group: " + nl.getLength());
 
             for (int i= 0; i<nl.getLength(); i++ ) {
-                System.out.println("Group: " + xp.compile(".//group_name").evaluate(nl.item(i)));
+                groupNameExpected= groupNameExpected + xp.compile(".//group_name").evaluate(nl.item(i)) + "\n";
             }
+                Assert.assertEquals(groupNameExpected,groupNameActual);
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
