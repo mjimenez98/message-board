@@ -56,7 +56,7 @@ public class GroupsTests {
             for (int i= 0; i<nl.getLength(); i++ ) {
                 groupNameXML= groupNameXML + xp.compile(".//group_name").evaluate(nl.item(i)) + "\n";
             }
-            Assert.assertFalse("This group does not exist.",groupNameXML.contains(undefinedGroup));
+            Assert.assertFalse(groupNameXML.contains(undefinedGroup));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
