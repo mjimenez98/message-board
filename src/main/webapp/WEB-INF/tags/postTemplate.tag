@@ -3,6 +3,7 @@
 <%@attribute name="postTitle" required="true" rtexprvalue="true" %>
 <%@attribute name="postUser" required="true" rtexprvalue="true" %>
 <%@attribute name="post" required="true" rtexprvalue="true" %>
+<%@attribute name="aname" required="true" rtexprvalue="true" %>
 
 <html>
 <head>

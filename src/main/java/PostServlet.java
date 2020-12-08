@@ -75,9 +75,6 @@ public class PostServlet extends HttpServlet {
                     session.setAttribute("editTitle", postId);
                     session.setAttribute("updatedTime", postId);
                     break;
-                case "view":
-                    response.sendRedirect("PostDownload.jsp");
-                    return;
                 case "save":
                     String editedMessage = request.getParameter("editMessage");
                     String editedTitle = request.getParameter("editTitle");

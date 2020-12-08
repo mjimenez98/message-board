@@ -114,6 +114,7 @@
                         for (Post post : posts) {
                             Attachment attachment = post.getAttachment();
                             boolean belongsToUser = (user != null && user.equals(post.getUsername()));
+                            int pid = post.getPostId();
                 %>
                             <div class="row mt-1 mb-3">
                                 <div class="container">
@@ -219,22 +220,9 @@
                                                         </button>
                                                     </form>
                                             <% } %>
-                                            <form action="PostDownload.jsp" method="post">
-                                                <% String postTitle = post.getTitle();
-                                                    String postUser = post.getUsername();
-                                                    String message = post.getMessage();
-                                                %>
-
-                                                <%
-                                                    session.setAttribute("postTitle", postTitle);
-                                                    session.setAttribute("postUser", postUser);
-                                                    session.setAttribute("message", message);
-                                                %>
-                                                <button type="submit" name="request" value="view"
-                                                        class="btn btn-dark btn-sm">
-                                                    View
-                                                </button>
-                                            </form>
+                                                <a href="PostDownload.jsp">
+                                                <button type="button" class="btn btn-dark btn-sm" OnClick=<%session.setAttribute("pid", pid);%>>View</button>
+                                                </a>
                                         </div>
                                     </div>
                                 </div>
