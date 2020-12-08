@@ -48,7 +48,7 @@ public class MembershipTests {
             for (int i = 0; i < nl.getLength(); i++) {
                 groupsActual.add(xpp.compile(".//group_name").evaluate(nl.item(i)) + "\n");
             }
-            
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
 
@@ -56,7 +56,7 @@ public class MembershipTests {
     }
 
     @Test
-    public void MembershipUndefinedUser() {
+    public void membershipUndefinedUser() {
         try {
             List<String> usersExpected = new ArrayList<>();
 
@@ -80,7 +80,7 @@ public class MembershipTests {
     }
 
     @Test
-    public void MembershipUndefinedGroup() {
+    public void membershipUndefinedGroup() {
         try {
             List<String> groupsExpected = new ArrayList<>();
 
