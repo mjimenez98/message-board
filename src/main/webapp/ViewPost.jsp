@@ -10,16 +10,10 @@
     String title = post.getTitle();
     String user = post.getUsername();
     String message = post.getMessage();
-    Attachment attach = post.getAttachment();
-    String aname = "";
-    if (attach != null) {
-        aname = attach.getName();
-    }
 %>
 
 <t:postTemplate title="View Post Page">
     <jsp:attribute name="postTitle"><%=title%></jsp:attribute>
     <jsp:attribute name="postUser"><%=user%></jsp:attribute>
     <jsp:attribute name="post"><%=message%></jsp:attribute>
-    <jsp:attribute name="aname"><%=aname%></jsp:attribute>
 </t:postTemplate>

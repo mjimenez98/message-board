@@ -3,7 +3,6 @@
 <%@attribute name="postTitle" required="true" rtexprvalue="true" %>
 <%@attribute name="postUser" required="true" rtexprvalue="true" %>
 <%@attribute name="post" required="true" rtexprvalue="true" %>
-<%@attribute name="aname" required="true" rtexprvalue="true" %>
 
 <html>
 <head>
@@ -23,17 +22,17 @@
     <p>${post}</p>
 </div>
 
-<input type="button" value="Download as XML" name="DownloadXML"
-       onclick=""/>
-<button type="button" class="btn btn-primary" onclick="switchPage('PostXML.jsp')">View As XML</button>
 
+<button type="button" class="btn btn-primary" onclick="switchPage('DownloadXML.jsp')">Download XML</button>
+<!--Not clear about what is asked so I created two implementations -->
+<!--Uses XSLT to transform XML into HTML Table-->
+<button type="button" class="btn btn-primary" onclick="switchPage('PostXML.jsp')">XML to HTML</button>
+<!--Manually Converts Message into Viewable XML in HTML-->
+<button type="button" class="btn btn-primary" onclick="switchPage('RawXML.jsp')">Raw XML</button>
 <script type="text/javascript">
     function switchPage(pageURL)
     {
         window.location.href = pageURL;
-    }
-    function download(xmlFile)
-    {
     }
 </script>
 </body>

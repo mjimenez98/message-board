@@ -11,8 +11,8 @@
     String message = post.getMessage();
 %>
 
-<t:xmlTemplate title="XML Page">
+<t:htmlxml title="XML Page">
     <jsp:attribute name="postTitle"><%=postTitle%></jsp:attribute>
     <jsp:attribute name="postUser"><%=user%></jsp:attribute>
     <jsp:attribute name="message"><%=message%></jsp:attribute>
-</t:xmlTemplate>
+</t:htmlxml>
