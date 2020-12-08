@@ -35,7 +35,9 @@
 
             // Temp version
             LinkedList<String> memberships = new LinkedList<>();
-//            memberships.add(adminGroup);
+            memberships.add(adminGroup);
+            memberships.add("encs");
+            memberships.add("concordia");
         %>
 
         <div class="container mw-100">
@@ -155,7 +157,7 @@
                                                     <div>
                                                         <h3><%= post.getTitle() %></h3>
 
-                                                        <h5 class="text-muted mb-1"><%= post.getUsername() %></h5>
+                                                        <h5 class="text-muted mb-1"><%= post.getUsername() %> - <%= post.getMembership() %></h5>
 
                                                         <p><%= post.getMessage() %></p>
 
@@ -263,6 +265,20 @@
                                     <label for="message">Message</label>
                                     <textarea id="message" name="message" class="form-control" cols="5" rows="3"></textarea>
                                 </div>
+
+                                <div>
+                                    <label for="membership">Group</label>
+                                    <select class="form-control" id="membership" name="membership" aria-label="Default select example">
+                                        <option selected>public</option>
+                                        <%
+                                            for (String membership: memberships) {
+                                        %>
+                                                <option value=<%= membership %>><%= membership %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                                <br>
 
                                 <div class="form-group">
                                     <label for="file">Attach a file:</label>

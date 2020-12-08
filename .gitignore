@@ -55,4 +55,4 @@ buildNumber.properties
 hs_err_pid*
 
 # Project properties
-src/main/webapp/WEB-INF/MessageBoard_en_US.properties
+src/main/webapp/WEB-INF/classes/MessageBoard_en_US.properties

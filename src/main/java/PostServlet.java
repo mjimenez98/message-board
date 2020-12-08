@@ -33,11 +33,12 @@ public class PostServlet extends HttpServlet {
                     // Get all params from request
                     String title = request.getParameter("title");
                     String username = request.getParameter("username");
+                    String membership = request.getParameter("membership");
                     String message = request.getParameter("message");
                     Part filePart = request.getPart("file");
 
                     // Create post
-                    Post createdPost = DBPost.createPost(title, username, message);
+                    Post createdPost = DBPost.createPost(title, username, membership, message);
 
                     // Create attachment
                     if (createdPost == null)
@@ -127,9 +128,8 @@ public class PostServlet extends HttpServlet {
 
         // Save who is the admin group from properties
         HttpSession session = request.getSession();
-        if (session.getAttribute("adminGroup") == null) {
+        if (session.getAttribute("adminGroup") == null)
             session.setAttribute("adminGroup", Props.GetValue("AdminGroup"));
-        }
 
         RequestDispatcher rd = request.getRequestDispatcher("Posts.jsp");
         rd.forward(request, response);

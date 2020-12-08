@@ -6,6 +6,7 @@ public class Post {
     private final int postId;
     private final String title;
     private final String username;
+    private final String membership;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final String message;
@@ -13,10 +14,12 @@ public class Post {
 
     private Attachment attachment;
 
-    public Post(int postId, String title, String username, LocalDateTime createdAt, LocalDateTime updatedAt, String message) {
+    public Post(int postId, String title, String username, String membership, LocalDateTime createdAt,
+                LocalDateTime updatedAt, String message) {
         this.postId = postId;
         this.title = title;
         this.username = username;
+        this.membership = membership;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.message = message;
@@ -41,6 +44,8 @@ public class Post {
     public String getUsername() {
         return username;
     }
+
+    public String getMembership() { return membership; }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

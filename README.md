@@ -37,7 +37,7 @@ Click on `Fix` and select `message-board:war`
 
 4. Run the new Tomcat configuration and navigate away!
 
-### properties.Props
+### Properties
 
 1. Go to `~/src/main/webapp/WEB-INF/classes/example-MessageBoard_en_US.properties`
 2. Copy the contents of this file, create another file in the same directory called `MessageBoard_en_US.properties`, 
