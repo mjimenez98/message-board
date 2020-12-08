@@ -204,6 +204,7 @@
                                             <%
                                                 if (belongsToUser) {
                                             %>
+
                                                     <form action="posts" method="post">
                                                         <input type="hidden" name="postId" value="<%= post.getPostId() %>">
 
@@ -218,6 +219,22 @@
                                                         </button>
                                                     </form>
                                             <% } %>
+                                            <form action="PostDownload.jsp" method="post">
+                                                <% String postTitle = post.getTitle();
+                                                    String postUser = post.getUsername();
+                                                    String message = post.getMessage();
+                                                %>
+
+                                                <%
+                                                    session.setAttribute("postTitle", postTitle);
+                                                    session.setAttribute("postUser", postUser);
+                                                    session.setAttribute("message", message);
+                                                %>
+                                                <button type="submit" name="request" value="view"
+                                                        class="btn btn-dark btn-sm">
+                                                    View
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
