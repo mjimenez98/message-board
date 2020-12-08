@@ -48,7 +48,7 @@ public class MembershipTests {
             for (int i = 0; i < nl.getLength(); i++) {
                 groupsActual.add(xpp.compile(".//group_name").evaluate(nl.item(i)) + "\n");
             }
-            //Assert.assertEquals("These groups exists.",groupNameExpected,groupNameXML);
+            
         } catch (Exception e) {
             System.out.println(e.getMessage());
 
