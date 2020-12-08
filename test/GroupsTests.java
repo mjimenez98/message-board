@@ -89,31 +89,54 @@ public class GroupsTests {
     public void circularRelationship() {
         try {
             String groupName = "encs";
-            String parentName = "concordia";
-            String otherGroup = "concordia";
-            String otherParent = "encs";
-            String firstDuo = "";
-            String secondDuo = "";
-            DocumentBuilderFactory dbf =
-                    DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            XPath xp = XPathFactory.newInstance().newXPath();
-            XPathExpression expr = xp.compile("//group[group_name= '" + groupName + "' and parent = '" + parentName + "']/parent/text()");
-
-            XPathExpression expr2 = xp.compile("//group[group_name = '" + otherGroup + "' and parent = '" + otherParent + "']/parent/text()");
-
-            Document d = db.parse("src\\main\\webapp\\WEB-INF\\groups.xml");
-            NodeList nodes = (NodeList) expr.evaluate(d, XPathConstants.NODESET);
-            NodeList nodes2 = (NodeList) expr2.evaluate(d, XPathConstants.NODESET);
-
-            for (int i = 0; i < nodes.getLength(); i++) {
-                firstDuo = nodes.item(i).getNodeValue();
-                secondDuo = nodes2.item(i).getNodeValue();
-            }
-            Assert.assertTrue(firstDuo.equals("") || secondDuo.equals(""));
-
+            //Check if parents contains givenGroup
+            Group group = new Group(groupName, "src\\main\\webapp\\WEB-INF\\groups.xml");
+            Assert.assertFalse(group.getHasCircularDependency());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
+
+
+    public String checkingForCircularDependency(String givenGroup, String groupName) throws Exception{
+        String currentParent = getParent(groupName);
+        if(currentParent != "") {
+            String parentOfParent = getParent(currentParent);
+            if(parentOfParent == ""){
+                return "";
+            }
+            else(parentOfParent == givenGroup){
+                    return "Exception" throw new Exception();
+                }
+            }
+        return currentParent;
+    }
+
+
+    public List<String> getParents(String groupName, Document groupsDoc){
+        String givenGroup = groupName;
+        String currentParent = groupName;
+        List<String> parents = new List<String>();
+        while(currentParent != "") {
+            currentParent = getParent(givenGroup, groupsDoc);
+            if(currentParent != ""){
+                parents.add(currentParent);
+            }
+        }
+        return parents;
+    }
+
+    public String getParent(String groupName, Document groupsDoc){
+        String parent = "";
+        if(groupName != "") {
+            XPathExpression expr = xp.compile("//group[group_name= '" + groupName + "']/parent/text()");
+            NodeList nodes = (NodeList) expr.evaluate(groupsDoc, XPathConstants.NODESET);
+            for (int i = 0; i < nodes.getLength(); i++) {
+                parent = nodes.item(i).getNodeValue();
+            }
+        }
+        return parent;
+    }
+
+
 }
