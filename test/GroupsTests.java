@@ -79,7 +79,7 @@ public class GroupsTests {
             for (int i = 0; i < nodes.getLength(); i++) {
                 parent = nodes.item(i).getNodeValue();
             }
-            Assert.assertTrue(parent.equals(""));
+            Assert.assertEquals(parent,"");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
