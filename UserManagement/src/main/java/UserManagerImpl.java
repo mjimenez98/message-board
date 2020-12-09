@@ -21,7 +21,7 @@ public class UserManagerImpl implements UserManager {
     String usersFile;
 
     public UserManagerImpl(String userMembership, String groupsFile, String usersFile){
-        this.userMembershipFile = userMembershipFile;
+        this.userMembershipFile = userMembership;
         this.groupsFile = groupsFile;
         this.usersFile = usersFile;
     } //Pass user membership file
