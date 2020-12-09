@@ -1,3 +1,4 @@
+import models.Group;
 import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -88,54 +89,13 @@ public class GroupsTests {
     @Test
     public void circularRelationship() {
         try {
-            String groupName = "encs";
+            String groupName = "concordia";
             //Check if parents contains givenGroup
-            Group group = new Group(groupName, "src\\main\\webapp\\WEB-INF\\groups.xml");
-            Assert.assertFalse(group.getHasCircularDependency());
+            Group group = new Group(groupName, "src\\main\\webapp\\WEB-INF\\errorGroups.xml");
+            Assert.assertTrue(group.getHasCircularDependency());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
-
-
-    public String checkingForCircularDependency(String givenGroup, String groupName) throws Exception{
-        String currentParent = getParent(groupName);
-        if(currentParent != "") {
-            String parentOfParent = getParent(currentParent);
-            if(parentOfParent == ""){
-                return "";
-            }
-            else(parentOfParent == givenGroup){
-                    return "Exception" throw new Exception();
-                }
-            }
-        return currentParent;
-    }
-
-
-    public List<String> getParents(String groupName, Document groupsDoc){
-        String givenGroup = groupName;
-        String currentParent = groupName;
-        List<String> parents = new List<String>();
-        while(currentParent != "") {
-            currentParent = getParent(givenGroup, groupsDoc);
-            if(currentParent != ""){
-                parents.add(currentParent);
-            }
-        }
-        return parents;
-    }
-
-    public String getParent(String groupName, Document groupsDoc){
-        String parent = "";
-        if(groupName != "") {
-            XPathExpression expr = xp.compile("//group[group_name= '" + groupName + "']/parent/text()");
-            NodeList nodes = (NodeList) expr.evaluate(groupsDoc, XPathConstants.NODESET);
-            for (int i = 0; i < nodes.getLength(); i++) {
-                parent = nodes.item(i).getNodeValue();
-            }
-        }
-        return parent;
     }
 
 

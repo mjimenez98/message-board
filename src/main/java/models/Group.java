@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.*;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +17,12 @@ public class Group {
     String groupsFile;
     String groupName;
     List<String> parents;
-    Boolean hasCircularDependency;
+    Boolean hasCircularDependency=false;
 
     public Group(String name, String groupsFile){
         groupName = name;
         this.groupsFile = groupsFile;
         setParents(findParents(name));
-        hasCircularDependency = checkCircularDependency();
     }
 
     public Boolean getHasCircularDependency() {
@@ -48,18 +48,23 @@ public class Group {
     private List<String> findParents(String groupName){
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
+            FileInputStream membershipsFile = new FileInputStream(groupsFile);
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document groupsDoc = db.parse(groupsFile);
+            Document groupsDoc = db.parse(new FileInputStream(groupsFile));
             String givenGroup = groupName;
             String currentParent = groupName;
             List<String> parents = new ArrayList<>();
-            while (currentParent != "") {
+            while (!currentParent.equals("") ){
                 try {
-                    currentParent = getParent(givenGroup, groupsDoc);
+                    currentParent = getParent(currentParent, groupsDoc);
                 } catch (XPathExpressionException e) {
                     e.printStackTrace();
                 }
-                if (currentParent != "") {
+                if (currentParent.equals(groupName)) {
+                    hasCircularDependency = true;
+                    break;
+                }
+                if (!currentParent.equals("")) {
                     parents.add(currentParent);
                 }
             }
