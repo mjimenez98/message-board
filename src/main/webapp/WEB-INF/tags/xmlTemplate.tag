@@ -5,6 +5,7 @@
 <%@attribute name="postUser" required="true" rtexprvalue="true" %>
 <%@attribute name="message" required="true" rtexprvalue="true" %>
 
+
 <html>
 <head>
     <title>${title}</title>

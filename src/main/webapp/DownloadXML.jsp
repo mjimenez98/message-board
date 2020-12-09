@@ -3,7 +3,7 @@
 <%@ page import="db.DBPost" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%
-    int pid = (int) session.getAttribute("pid");
+    int pid = Integer.parseInt(request.getParameter("pid"));
     Post post = DBPost.getPost(pid);
     String postTitle = post.getTitle();
     String user = post.getUsername();

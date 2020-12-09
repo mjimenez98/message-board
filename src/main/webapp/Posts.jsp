@@ -220,8 +220,8 @@
                                                         </button>
                                                     </form>
                                             <% } %>
-                                                <a href="ViewPost.jsp">
-                                                <button type="button" class="btn btn-dark btn-sm" OnClick=<%session.setAttribute("pid", pid);%>>View</button>
+                                                <a href="ViewPost.jsp?postId=<%=pid%>">
+                                                <button type="button" class="btn btn-dark btn-sm">View</button>
                                                 </a>
                                         </div>
                                     </div>

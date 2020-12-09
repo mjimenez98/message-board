@@ -5,7 +5,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <%
-    int pid = (int) session.getAttribute("pid");
+    int pid = Integer.parseInt(request.getParameter("postId"));
     Post post = DBPost.getPost(pid);
     String title = post.getTitle();
     String user = post.getUsername();
@@ -16,4 +16,5 @@
     <jsp:attribute name="postTitle"><%=title%></jsp:attribute>
     <jsp:attribute name="postUser"><%=user%></jsp:attribute>
     <jsp:attribute name="post"><%=message%></jsp:attribute>
+    <jsp:attribute name="pid"><%=pid%></jsp:attribute>
 </t:postTemplate>
