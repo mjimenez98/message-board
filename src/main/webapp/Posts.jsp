@@ -123,6 +123,7 @@
                         for (Post post : posts) {
                             Attachment attachment = post.getAttachment();
                             boolean editable = (user != null && user.equals(post.getUsername()) || memberships.contains(adminGroup));
+                            int pid = post.getPostId();
                 %>
                             <div class="row mt-1 mb-3">
                                 <div class="container">
@@ -213,6 +214,7 @@
                                             <%
                                                 if (editable) {
                                             %>
+
                                                     <form action="posts" method="post">
                                                         <input type="hidden" name="postId" value="<%= post.getPostId() %>">
 
@@ -227,6 +229,9 @@
                                                         </button>
                                                     </form>
                                             <% } %>
+                                            <a href="ViewPost.jsp?pid=<%=pid%>">
+                                                <button type="button" class="btn btn-dark btn-sm">View</button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

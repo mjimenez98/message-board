@@ -1,4 +1,5 @@
 import com.google.common.hash.Hashing;
+import models.Group;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -11,19 +12,46 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserManagerImpl implements UserManager {
-    String file1; //TO DO: rename
+    String userMembershipFile; //TO DO: rename
+    String groupsFile;
+    String usersFile;
 
-    public UserManagerImpl(String file1){
-        this.file1 = file1;
-    }
+    public UserManagerImpl(String userMembership, String groupsFile, String usersFile){
+        this.userMembershipFile = userMembership;
+        this.groupsFile = groupsFile;
+        this.usersFile = usersFile;
+    } //Pass user membership file
 
+    /**
+     * Returns all the groups the member is part of explicitly.
+     * @param user
+     * @return
+     */
     @Override
-    public LinkedList<String> getGroupMemberships(String user) {
-        //TO DO: Add implementation
+    public List<Group> getGroupMemberships(String user) {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document membershipDoc = db.parse(userMembershipFile);
+            XPath xp = XPathFactory.newInstance().newXPath();
+            XPathExpression expr = xp.compile("//user-membership[user_id= '" + user + "']/group_name/text()");
+            NodeList nodes = (NodeList) expr.evaluate(membershipDoc, XPathConstants.NODESET);
+            List<Group> memberships = new ArrayList<>();
+            for (int i = 0; i < nodes.getLength(); i++) {
+                String group = nodes.item(i).getNodeValue();
+                Group membership = new Group(group, groupsFile);
+                memberships.add(membership);
+            }
+            return memberships;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 
@@ -33,7 +61,7 @@ public class UserManagerImpl implements UserManager {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         try {
-            FileInputStream fileIS = new FileInputStream(file1);
+            FileInputStream fileIS = new FileInputStream(usersFile);
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document xmlDocument = builder.parse(fileIS);
             //Create Xpath

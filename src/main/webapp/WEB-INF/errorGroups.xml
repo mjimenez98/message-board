@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<groups>
+    <group>
+        <group_name>concordia</group_name>
+        <parent>Soen</parent>
+    </group>
+    <group>
+        <group_name>Soen</group_name>
+        <parent>concordia</parent>
+    </group>
+</groups>
