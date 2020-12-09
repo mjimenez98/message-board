@@ -4,7 +4,7 @@
 <%@ taglib prefix = "x" uri = "http://java.sun.com/jsp/jstl/xml" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%
-    int pid = Integer.parseInt(request.getParameter("pic"));
+    int pid = Integer.parseInt(request.getParameter("pid"));
     Post post = DBPost.getPost(pid);
     String postTitle = post.getTitle();
     String user = post.getUsername();

@@ -220,9 +220,9 @@
                                                         </button>
                                                     </form>
                                             <% } %>
-                                                <a href="ViewPost.jsp?postId=<%=pid%>">
+                                            <a href="ViewPost.jsp?pid=<%=pid%>">
                                                 <button type="button" class="btn btn-dark btn-sm">View</button>
-                                                </a>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

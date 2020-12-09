@@ -5,7 +5,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <%
-    int pid = Integer.parseInt(request.getParameter("postId"));
+    int pid = Integer.parseInt(request.getParameter("pid"));
     Post post = DBPost.getPost(pid);
     String title = post.getTitle();
     String user = post.getUsername();
