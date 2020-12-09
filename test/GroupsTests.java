@@ -91,7 +91,7 @@ public class GroupsTests {
         try {
             String groupName = "concordia";
             //Check if parents contains givenGroup
-            Group group = new Group(groupName, "src\\main\\webapp\\WEB-INF\\errorGroups.xml");
+            Group group = new Group(groupName, "src/main/webapp/WEB-INF/errorGroups.xml");
             Assert.assertTrue(group.getHasCircularDependency());
         } catch (Exception e) {
             System.out.println(e.getMessage());

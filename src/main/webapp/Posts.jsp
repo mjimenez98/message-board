@@ -1,6 +1,9 @@
 <%@ page import="models.Post" %>
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="models.Attachment" %>
+<%@ page import="models.Group" %>
+<%@ page import="java.util.List" %>
+<%@ page import="models.GroupManager" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
@@ -31,13 +34,7 @@
             String user = (String) session.getAttribute("user");
             String adminGroup = (String) session.getAttribute("adminGroup");
             // For final version
-//            LinkedList<String> memberships = (LinkedList<String>) session.getAttribute("memberships");
-
-            // Temp version
-            LinkedList<String> memberships = new LinkedList<>();
-            memberships.add(adminGroup);
-            memberships.add("encs");
-            memberships.add("concordia");
+            List<Group> memberships = (List<Group>) session.getAttribute("memberships");
         %>
 
         <div class="container mw-100">
@@ -122,8 +119,18 @@
                     if (request.getAttribute("posts") != null) {
                         for (Post post : posts) {
                             Attachment attachment = post.getAttachment();
-                            boolean editable = (user != null && user.equals(post.getUsername()) || memberships.contains(adminGroup));
+
+                            boolean visible = (GroupManager.containsGroup(memberships, post.getMembership()) ||
+                                    GroupManager.containsGroup(memberships, adminGroup) ||
+                                    post.getMembership().equals("public"));
+                            boolean editable = (user != null && user.equals(post.getUsername()) || GroupManager.containsGroup(memberships, adminGroup));
                             int pid = post.getPostId();
+
+                            /* Render if viewer is allowed to see post
+                                @param memberships - Viewer memberships
+                                @param membership  - Post group
+                             */
+                            if (visible) {
                 %>
                             <div class="row mt-1 mb-3">
                                 <div class="container">
@@ -237,6 +244,7 @@
                                 </div>
                             </div>
                 <%
+                            }
                         }
                     }
                 %>
@@ -276,9 +284,9 @@
                                     <select class="form-control" id="membership" name="membership" aria-label="Default select example">
                                         <option selected>public</option>
                                         <%
-                                            for (String membership: memberships) {
+                                            for (Group membership: memberships) {
                                         %>
-                                                <option value=<%= membership %>><%= membership %></option>
+                                                <option value=<%= membership.getGroupName() %>><%= membership.getGroupName() %></option>
                                         <% } %>
                                     </select>
                                 </div>
