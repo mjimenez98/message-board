@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 @WebServlet(name = "PostServlet")
 @MultipartConfig(maxFileSize = 16177215) // 16 MB
 public class PostServlet extends HttpServlet {
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Get params
         HttpSession session = request.getSession();
