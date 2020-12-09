@@ -1,6 +1,9 @@
 <%@ page import="models.Post" %>
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="models.Attachment" %>
+<%@ page import="models.Group" %>
+<%@ page import="java.util.List" %>
+<%@ page import="models.GroupManager" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
@@ -29,6 +32,9 @@
             }
 
             String user = (String) session.getAttribute("user");
+            String adminGroup = (String) session.getAttribute("adminGroup");
+            // For final version
+            List<Group> memberships = (List<Group>) session.getAttribute("memberships");
         %>
 
         <div class="container mw-100">
@@ -113,8 +119,18 @@
                     if (request.getAttribute("posts") != null) {
                         for (Post post : posts) {
                             Attachment attachment = post.getAttachment();
-                            boolean belongsToUser = (user != null && user.equals(post.getUsername()));
+
+                            boolean visible = (GroupManager.containsGroup(memberships, post.getMembership()) ||
+                                    GroupManager.containsGroup(memberships, adminGroup) ||
+                                    post.getMembership().equals("public"));
+                            boolean editable = (user != null && user.equals(post.getUsername()) || GroupManager.containsGroup(memberships, adminGroup));
                             int pid = post.getPostId();
+
+                            /* Render if viewer is allowed to see post
+                                @param memberships - Viewer memberships
+                                @param membership  - Post group
+                             */
+                            if (visible) {
                 %>
                             <div class="row mt-1 mb-3">
                                 <div class="container">
@@ -149,7 +165,7 @@
                                                     <div>
                                                         <h3><%= post.getTitle() %></h3>
 
-                                                        <h5 class="text-muted mb-1"><%= post.getUsername() %></h5>
+                                                        <h5 class="text-muted mb-1"><%= post.getUsername() %> - <%= post.getMembership() %></h5>
 
                                                         <p><%= post.getMessage() %></p>
 
@@ -161,7 +177,7 @@
 
                                                                     <p><%= attachment.getContentType() + " - " +  attachment.printSize()%></p>
 
-                                                                    <% if (belongsToUser) { %>
+                                                                    <% if (editable) { %>
                                                                         <form action="posts/attachments" method="post"
                                                                               enctype="multipart/form-data" class="mb-3">
                                                                             <input type="hidden" name="postId" value="<%= post.getPostId() %>">
@@ -203,7 +219,7 @@
 
                                             <%-- Edit and delete buttons --%>
                                             <%
-                                                if (belongsToUser) {
+                                                if (editable) {
                                             %>
 
                                                     <form action="posts" method="post">
@@ -228,6 +244,7 @@
                                 </div>
                             </div>
                 <%
+                            }
                         }
                     }
                 %>
@@ -261,6 +278,20 @@
                                     <label for="message">Message</label>
                                     <textarea id="message" name="message" class="form-control" cols="5" rows="3"></textarea>
                                 </div>
+
+                                <div>
+                                    <label for="membership">Group</label>
+                                    <select class="form-control" id="membership" name="membership" aria-label="Default select example">
+                                        <option selected>public</option>
+                                        <%
+                                            for (Group membership: memberships) {
+                                        %>
+                                                <option value=<%= membership.getGroupName() %>><%= membership.getGroupName() %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                                <br>
 
                                 <div class="form-group">
                                     <label for="file">Attach a file:</label>

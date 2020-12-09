@@ -8,12 +8,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -35,10 +29,12 @@ public class LoginPageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+
         if (userManagerImpl.isAuthenticated(username, password)) {
             HttpSession session = request.getSession();
             session.setAttribute("user", username);
-            //setting session to expiry in 30 mins
+
+            // Setting session to expiry in 30 mins
             session.setMaxInactiveInterval(MAX_INACTIVE);
             List<Group> memberships = userManagerImpl.getGroupMemberships(username);
             session.setAttribute("memberships", memberships);

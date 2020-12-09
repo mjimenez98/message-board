@@ -40,6 +40,7 @@ public class DBPost {
                         rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("username"),
+                        rs.getString("membership"),
                         LocalDateTime.parse(rs.getString("created_at"), formatter),
                         LocalDateTime.parse(rs.getString("updated_at"), formatter),
                         rs.getString("message"));
@@ -79,6 +80,7 @@ public class DBPost {
                         rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("username"),
+                        rs.getString("membership"),
                         LocalDateTime.parse(rs.getString("created_at"), formatter),
                         LocalDateTime.parse(rs.getString("updated_at"), formatter),
                         rs.getString("message"));
@@ -119,6 +121,7 @@ public class DBPost {
                         rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("username"),
+                        rs.getString("membership"),
                         LocalDateTime.parse(rs.getString("created_at"), formatter),
                         LocalDateTime.parse(rs.getString("updated_at"), formatter),
                         rs.getString("message"));
@@ -138,7 +141,7 @@ public class DBPost {
         return post;
     }
 
-    public static Post createPost(String title, String username, String message) {
+    public static Post createPost(String title, String username, String membership, String message) {
         Post post = null;
 
         try {
@@ -149,11 +152,12 @@ public class DBPost {
             Connection con = DBConnection.getConnection();
 
             // SQL query
-            query = "INSERT INTO posts (title, username, message) values(?, ?, ?)";
+            query = "INSERT INTO posts (title, username, membership, message) values(?, ?, ?, ?)";
             st = con.prepareStatement(query);
             st.setString(1, title);
             st.setString(2, username);
-            st.setString(3, message);
+            st.setString(3, membership);
+            st.setString(4, message);
 
             // Execute the insert command using executeUpdate() to make changes in database
             st.executeUpdate();
@@ -239,6 +243,7 @@ public class DBPost {
                         rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("username"),
+                        rs.getString("membership"),
                         LocalDateTime.parse(rs.getString("created_at"), formatter),
                         LocalDateTime.parse(rs.getString("updated_at"), formatter),
                         rs.getString("message"));
